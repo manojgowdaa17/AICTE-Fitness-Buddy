@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fitness Buddy – Your AI Health Coach</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:     #2563eb;
+      --primary-dk:  #1d4ed8;
+      --primary-lt:  #eff6ff;
+      --green:       #16a34a;
+      --green-lt:    #dcfce7;
+      --orange:      #ea580c;
+      --orange-lt:   #fff7ed;
+      --purple:      #7c3aed;
+      --purple-lt:   #f5f3ff;
+      --pink:        #db2777;
+      --pink-lt:     #fdf2f8;
+      --surface:     #f8fafc;
+      --bg:          #ffffff;
+      --border:      #e2e8f0;
+      --text:        #0f172a;
+      --text-2:      #334155;
+      --muted:       #64748b;
+      --user-bg:     #2563eb;
+      --bot-bg:      #f1f5f9;
+      --sidebar-w:   260px;
+      --radius:      16px;
+      --shadow-sm:   0 1px 4px rgba(0,0,0,.07);
+      --shadow:      0 4px 24px rgba(0,0,0,.10);
+      --shadow-lg:   0 8px 40px rgba(0,0,0,.14);
+    }
+
+    html, body { height: 100%; }
+
+    body {
+      font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+      background: linear-gradient(140deg, #dbeafe 0%, #ede9fe 50%, #dcfce7 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: var(--text);
+    }
+
+    /* ── Layout shell ──────────────────────────────────────────── */
+    .shell {
+      display: flex;
+      width: 100%;
+      max-width: 1200px;
+      height: calc(100vh - 40px);
+      min-height: 600px;
+      border-radius: 24px;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       SIDEBAR
+    ══════════════════════════════════════════════════════════════ */
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      background: linear-gradient(180deg, #1e3a8a 0%, #1d4ed8 45%, #15803d 100%);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Sidebar brand */
+    .sidebar-brand {
+      padding: 24px 20px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+    }
+    .brand-icon {
+      width: 44px; height: 44px;
+      background: rgba(255,255,255,.18);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .brand-text h2 {
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .brand-text span {
+      color: rgba(255,255,255,.65);
+      font-size: .72rem;
+    }
+
+    /* Sidebar status pill */
+    .status-pill {
+      margin: 14px 16px 0;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 10px;
+      padding: 10px 13px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+    .status-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 0 3px rgba(74,222,128,.25);
+      flex-shrink: 0;
+    }
+    .status-pill span { color: rgba(255,255,255,.85); font-size: .78rem; }
+
+    /* Sidebar section label */
+    .sidebar-label {
+      padding: 18px 16px 6px;
+      color: rgba(255,255,255,.45);
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    /* Sidebar nav buttons */
+    .sidebar-nav {
+      padding: 0 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border: none;
+      background: transparent;
+      border-radius: 12px;
+      cursor: pointer;
+      color: rgba(255,255,255,.78);
+      font-size: .84rem;
+      font-weight: 500;
+      font-family: inherit;
+      text-align: left;
+      transition: background .15s, color .15s;
+    }
+    .nav-btn:hover, .nav-btn.active {
+      background: rgba(255,255,255,.15);
+      color: #fff;
+    }
+    .nav-btn .nav-icon {
+      width: 30px; height: 30px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    /* Sidebar quick-send tiles */
+    .sidebar-label-2 {
+      padding: 16px 16px 6px;
+      color: rgba(255,255,255,.45);
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .quick-tiles {
+      padding: 0 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      overflow-y: auto;
+      flex: 1;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,.15) transparent;
+    }
+    .quick-tile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border: none;
+      background: transparent;
+      border-radius: 10px;
+      cursor: pointer;
+      text-align: left;
+      transition: background .15s;
+      font-family: inherit;
+    }
+    .quick-tile:hover { background: rgba(255,255,255,.1); }
+    .tile-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .quick-tile span {
+      color: rgba(255,255,255,.72);
+      font-size: .8rem;
+      line-height: 1.3;
+    }
+    .quick-tile:hover span { color: #fff; }
+
+    /* Sidebar footer */
+    .sidebar-foot {
+      padding: 14px 16px;
+      border-top: 1px solid rgba(255,255,255,.1);
+      color: rgba(255,255,255,.4);
+      font-size: .68rem;
+      line-height: 1.5;
+    }
+    .ibm-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 6px;
+      padding: 3px 8px;
+      color: rgba(255,255,255,.75);
+      font-size: .7rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       MAIN PANEL
+    ══════════════════════════════════════════════════════════════ */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background: var(--bg);
+    }
+
+    /* Top bar */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 28px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      background: var(--bg);
+      gap: 16px;
+    }
+    .topbar-left h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .topbar-left p {
+      font-size: .78rem;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .icon-btn {
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      transition: background .15s, border-color .15s;
+      position: relative;
+    }
+    .icon-btn:hover { background: var(--primary-lt); border-color: var(--primary); }
+    .icon-btn[title]:hover::after {
+      content: attr(title);
+      position: absolute;
+      bottom: -30px;
+      left: 50%; transform: translateX(-50%);
+      background: var(--text);
+      color: #fff;
+      font-size: .68rem;
+      padding: 3px 8px;
+      border-radius: 5px;
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .clear-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--muted);
+      font-family: inherit;
+      transition: background .15s, border-color .15s, color .15s;
+    }
+    .clear-btn:hover { background: #fef2f2; border-color: #fca5a5; color: #dc2626; }
+
+    /* Category tab strip */
+    .tab-strip {
+      display: flex;
+      gap: 6px;
+      padding: 12px 28px;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      flex-shrink: 0;
+      scrollbar-width: none;
+      background: var(--surface);
+    }
+    .tab-strip::-webkit-scrollbar { display: none; }
+    .tab {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 16px;
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+      font-family: inherit;
+      transition: all .15s;
+      flex-shrink: 0;
+    }
+    .tab:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-lt); }
+    .tab.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+    .tab-count {
+      background: rgba(255,255,255,.3);
+      border-radius: 10px;
+      padding: 1px 6px;
+      font-size: .68rem;
+    }
+    .tab:not(.active) .tab-count { background: var(--surface); color: var(--muted); }
+
+    /* ── Chat window ──────────────────────────────────────────── */
+    .chat-window {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      scroll-behavior: smooth;
+    }
+    .chat-window::-webkit-scrollbar { width: 5px; }
+    .chat-window::-webkit-scrollbar-track { background: transparent; }
+    .chat-window::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    /* Category chips inside chat (shown when tab is clicked) */
+    .chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      animation: fadeUp .2s ease;
+    }
+    .chip-group-title {
+      width: 100%;
+      font-size: .78rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .cat-chip {
+      padding: 7px 14px;
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: .8rem;
+      font-weight: 600;
+      font-family: inherit;
+      transition: all .15s;
+    }
+    .cat-chip:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0,0,0,.1); }
+
+    /* ── Messages ─────────────────────────────────────────────── */
+    .message {
+      display: flex;
+      gap: 12px;
+      max-width: 88%;
+      animation: fadeUp .25s ease;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .message.user { align-self: flex-end; flex-direction: row-reverse; }
+    .message.bot  { align-self: flex-start; }
+
+    .avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .message.user .avatar { background: var(--user-bg); box-shadow: 0 2px 8px rgba(37,99,235,.3); }
+    .message.bot  .avatar { background: var(--green-lt); border: 1.5px solid #86efac; }
+
+    .bubble {
+      padding: 13px 17px;
+      border-radius: var(--radius);
+      line-height: 1.65;
+      font-size: .91rem;
+      word-break: break-word;
+    }
+    .message.user .bubble {
+      background: var(--user-bg);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+      box-shadow: 0 2px 10px rgba(37,99,235,.2);
+    }
+    .message.bot .bubble {
+      background: var(--bot-bg);
+      color: var(--text);
+      border-bottom-left-radius: 4px;
+      border: 1px solid var(--border);
+    }
+    .bubble strong { font-weight: 700; }
+    .bubble em     { font-style: italic; }
+    .bubble ul, .bubble ol { padding-left: 20px; margin: 7px 0; }
+    .bubble li { margin: 4px 0; }
+    .bubble p  { margin: 7px 0; }
+    .bubble p:first-child { margin-top: 0; }
+    .bubble p:last-child  { margin-bottom: 0; }
+    .bubble h3 { font-size: .95rem; font-weight: 700; margin: 10px 0 4px; color: var(--primary); }
+
+    /* Message meta (timestamp) */
+    .msg-meta {
+      font-size: .68rem;
+      color: var(--muted);
+      margin-top: 4px;
+      padding: 0 2px;
+    }
+    .message.user .msg-meta { text-align: right; }
+
+    /* Typing indicator */
+    .typing-indicator {
+      display: flex; align-items: center; gap: 6px;
+      padding: 13px 17px;
+      background: var(--bot-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      border-bottom-left-radius: 4px;
+      width: fit-content;
+    }
+    .typing-label { font-size: .78rem; color: var(--muted); margin-right: 4px; }
+    .dot {
+      width: 8px; height: 8px;
+      background: var(--muted);
+      border-radius: 50%;
+      animation: bounce 1.2s infinite;
+    }
+    .dot:nth-child(3) { animation-delay: .2s; }
+    .dot:nth-child(4) { animation-delay: .4s; }
+    @keyframes bounce {
+      0%, 60%, 100% { transform: translateY(0); }
+      30%            { transform: translateY(-6px); }
+    }
+
+    /* ── Input area ───────────────────────────────────────────── */
+    .input-area {
+      padding: 16px 28px 20px;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+      flex-shrink: 0;
+    }
+    .input-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 18px;
+      padding: 8px 8px 8px 16px;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .input-row:focus-within {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.1);
+      background: #fff;
+    }
+    #userInput {
+      flex: 1;
+      resize: none;
+      border: none;
+      background: transparent;
+      padding: 6px 0;
+      font-size: .95rem;
+      font-family: inherit;
+      line-height: 1.55;
+      color: var(--text);
+      outline: none;
+      max-height: 160px;
+      overflow-y: auto;
+      min-height: 36px;
+    }
+    #userInput::placeholder { color: #94a3b8; }
+    .input-actions {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .attach-btn {
+      width: 38px; height: 38px;
+      border: none;
+      background: transparent;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      color: var(--muted);
+      transition: background .15s, color .15s;
+    }
+    .attach-btn:hover { background: var(--primary-lt); color: var(--primary); }
+    .send-btn {
+      width: 42px; height: 42px;
+      background: var(--primary);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s, transform .1s, box-shadow .15s;
+      box-shadow: 0 2px 8px rgba(37,99,235,.3);
+    }
+    .send-btn:hover:not(:disabled) { background: var(--primary-dk); box-shadow: 0 4px 14px rgba(37,99,235,.4); }
+    .send-btn:active:not(:disabled) { transform: scale(.93); }
+    .send-btn:disabled { background: #cbd5e1; box-shadow: none; cursor: not-allowed; }
+    .send-btn svg { fill: #fff; }
+    .input-hint {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      padding: 0 4px;
+    }
+    .input-hint span { font-size: .72rem; color: var(--muted); }
+    #charCount { font-size: .72rem; color: var(--muted); }
+    #charCount.warn { color: #ea580c; }
+
+    /* ── Toast ────────────────────────────────────────────────── */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%; transform: translateX(-50%) translateY(20px);
+      background: #1e293b;
+      color: #fff;
+      padding: 11px 20px;
+      border-radius: 12px;
+      font-size: .84rem;
+      font-weight: 500;
+      box-shadow: 0 4px 20px rgba(0,0,0,.25);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s, transform .25s;
+      z-index: 999;
+      max-width: 90vw;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .toast.error { background: #dc2626; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ── Hamburger (mobile) ───────────────────────────────────── */
+    .hamburger {
+      display: none;
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      border-radius: 10px;
+      cursor: pointer;
+      align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      body { padding: 0; }
+      .shell { height: 100vh; border-radius: 0; max-width: 100%; }
+      .sidebar {
+        position: fixed; top: 0; left: -280px;
+        width: 280px; height: 100vh;
+        z-index: 100;
+        transition: left .25s ease;
+      }
+      .sidebar.open { left: 0; }
+      .hamburger { display: flex; }
+      .chat-window { padding: 16px 16px; }
+      .topbar { padding: 12px 16px; }
+      .tab-strip { padding: 10px 16px; }
+      .input-area { padding: 12px 16px 16px; }
+      .message { max-width: 94%; }
+    }
+
+    @media (min-width: 769px) {
+      .hamburger { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ══════════════════════ SIDEBAR ══════════════════════ -->
+  <aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-brand">
+      <div class="brand-icon">🏋️</div>
+      <div class="brand-text">
+        <h2>Fitness Buddy</h2>
+        <span>AI Health Coach</span>
+      </div>
+    </div>
+
+    <div class="status-pill">
+      <div class="status-dot"></div>
+      <span>IBM Granite · Online</span>
+    </div>
+
+    <div class="sidebar-label">Features</div>
+    <div class="sidebar-nav">
+      <button class="nav-btn active" onclick="setCategory('all')">
+        <div class="nav-icon" style="background:rgba(255,255,255,.15)">💬</div>
+        Chat with Buddy
+      </button>
+      <button class="nav-btn" onclick="setCategory('workout')">
+        <div class="nav-icon" style="background:rgba(239,68,68,.25)">🏃</div>
+        Workouts
+      </button>
+      <button class="nav-btn" onclick="setCategory('nutrition')">
+        <div class="nav-icon" style="background:rgba(34,197,94,.25)">🥗</div>
+        Nutrition
+      </button>
+      <button class="nav-btn" onclick="setCategory('motivation')">
+        <div class="nav-icon" style="background:rgba(234,179,8,.25)">⚡</div>
+        Motivation
+      </button>
+      <button class="nav-btn" onclick="setCategory('habit')">
+        <div class="nav-icon" style="background:rgba(168,85,247,.25)">📅</div>
+        Habit Building
+      </button>
+    </div>
+
+    <div class="sidebar-label-2">Quick Ask</div>
+    <div class="quick-tiles">
+      <button class="quick-tile" onclick="sendQuick('Give me a 20-minute home workout routine')">
+        <div class="tile-dot" style="background:#f87171"></div>
+        <span>20-min Home Workout</span>
+      </button>
+      <button class="quick-tile" onclick="sendQuick('What are the best exercises for weight loss?')">
+        <div class="tile-dot" style="background:#fb923c"></div>
+        <span>Weight Loss Exercises</span>
+      </button>
+      <button class="quick-tile" onclick="sendQuick('Suggest a healthy high-protein breakfast')">
+        <div class="tile-dot" style="background:#4ade80"></div>
+        <span>High-Protein Breakfast</span>
+      </button>
+      <button class="quick-tile" onclick="sendQuick('Give me a 7-day meal plan for muscle gain')">
+        <div class="tile-dot" style="background:#34d399"></div>
+        <span>7-Day Muscle Gain Meal Plan</span>
+      </button>
+      <button class="quick-tile" onclick="sendQuick('I need motivation to start working out today')">
+        <div class="tile-dot" style="background:#facc15"></div>
+        <span>Motivate Me Today</span>
+      </button>
+      <button class="quick-tile" onclick="sendQuick('How do I build a morning workout habit?')">
+        <div class="tile-dot" style="background:#a78bfa"></div>
+        <span>Morning Workout Habit</span>
+      </button>
+      <button class="quick-tile" onclick="sendQuick('Quick 5-minute full body stretching routine')">
+        <div class="tile-dot" style="background:#60a5fa"></div>
+        <span>5-min Stretch Routine</span>
+      </button>
+      <button class="quick-tile" onclick="sendQuick('What are good foods to eat before a workout?')">
+        <div class="tile-dot" style="background:#f472b6"></div>
+        <span>Pre-Workout Foods</span>
+      </button>
+      <button class="quick-tile" onclick="sendQuick('Create a beginner 30-day fitness plan')">
+        <div class="tile-dot" style="background:#38bdf8"></div>
+        <span>30-Day Beginner Plan</span>
+      </button>
+      <button class="quick-tile" onclick="sendQuick('How much water should I drink per day?')">
+        <div class="tile-dot" style="background:#2dd4bf"></div>
+        <span>Daily Water Intake</span>
+      </button>
+    </div>
+
+    <div class="sidebar-foot">
+      <div class="ibm-badge">⚡ IBM Granite AI</div><br>
+      Not a substitute for medical advice.
+    </div>
+  </aside>
+
+  <!-- overlay for mobile sidebar -->
+  <div id="overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99" onclick="closeSidebar()"></div>
+
+  <!-- ══════════════════════ MAIN ══════════════════════════ -->
+  <div class="main">
+
+    <!-- Top bar -->
+    <div class="topbar">
+      <button class="hamburger" id="hamburger" onclick="toggleSidebar()">☰</button>
+      <div class="topbar-left">
+        <h3 id="topbarTitle">💬 Chat with Fitness Buddy</h3>
+        <p id="topbarSub">Ask me anything about fitness, nutrition, or motivation</p>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" title="Daily Tip" onclick="sendQuick('Give me a fitness tip for today')">💡</button>
+        <button class="icon-btn" title="Random Workout" onclick="sendQuick('Surprise me with a fun workout!')">🎲</button>
+        <button class="icon-btn" title="Calorie Info" onclick="sendQuick('How do I calculate my daily calorie needs?')">🔥</button>
+        <button class="clear-btn" onclick="clearChat()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+          Clear Chat
+        </button>
+      </div>
+    </div>
+
+    <!-- Category tab strip -->
+    <div class="tab-strip">
+      <button class="tab active" id="tab-all"        onclick="showTabChips('all')">🌟 All <span class="tab-count">10</span></button>
+      <button class="tab"        id="tab-workout"    onclick="showTabChips('workout')">🏋️ Workouts <span class="tab-count">4</span></button>
+      <button class="tab"        id="tab-nutrition"  onclick="showTabChips('nutrition')">🥗 Nutrition <span class="tab-count">3</span></button>
+      <button class="tab"        id="tab-motivation" onclick="showTabChips('motivation')">💪 Motivation <span class="tab-count">2</span></button>
+      <button class="tab"        id="tab-habit"      onclick="showTabChips('habit')">📅 Habits <span class="tab-count">3</span></button>
+      <button class="tab"        id="tab-cardio"     onclick="showTabChips('cardio')">🏃 Cardio <span class="tab-count">3</span></button>
+      <button class="tab"        id="tab-yoga"       onclick="showTabChips('yoga')">🧘 Yoga &amp; Stretch <span class="tab-count">3</span></button>
+    </div>
+
+    <!-- Chat messages -->
+    <div class="chat-window" id="chatWindow"></div>
+
+    <!-- Input area (bigger box) -->
+    <div class="input-area">
+      <div class="input-row">
+        <textarea
+          id="userInput"
+          placeholder="Ask about workouts, meals, motivation, habits… (Shift+Enter for new line)"
+          rows="2"
+          maxlength="1000"
+        ></textarea>
+        <div class="input-actions">
+          <button class="attach-btn" title="Surprise workout" onclick="sendQuick('Give me a random fun workout!')">🎲</button>
+          <button class="send-btn" id="sendBtn" title="Send (Enter)">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="input-hint">
+        <span>Press <strong>Enter</strong> to send · <strong>Shift+Enter</strong> for new line</span>
+        <span id="charCount">0 / 1000</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── State ──────────────────────────────────────────────────────
+const chatHistory = [];
+let isLoading = false;
+let currentCategory = 'all';
+
+// ── DOM refs ───────────────────────────────────────────────────
+const chatWindow  = document.getElementById('chatWindow');
+const userInput   = document.getElementById('userInput');
+const sendBtn     = document.getElementById('sendBtn');
+const toast       = document.getElementById('toast');
+const charCount   = document.getElementById('charCount');
+const topbarTitle = document.getElementById('topbarTitle');
+const topbarSub   = document.getElementById('topbarSub');
+
+// ── Tab chip data ──────────────────────────────────────────────
+const TAB_CHIPS = {
+  all: [
+    { label: '🏠 Home Workout',        q: 'Give me a 20-minute home workout routine',           color: '#2563eb' },
+    { label: '🥗 Healthy Breakfast',   q: 'Suggest a healthy high-protein breakfast',            color: '#16a34a' },
+    { label: '💪 Motivate Me',         q: 'I need fitness motivation right now!',                color: '#ea580c' },
+    { label: '📅 Build a Habit',       q: 'Help me build a consistent daily fitness habit',      color: '#7c3aed' },
+    { label: '🎯 Belly Fat',           q: 'What exercises help reduce belly fat?',               color: '#db2777' },
+    { label: '🔰 Beginner Plan',       q: 'Suggest a beginner workout plan for weight loss',     color: '#0891b2' },
+    { label: '🥩 Muscle Gain',         q: 'What should I eat for muscle gain?',                 color: '#65a30d' },
+    { label: '🧘 Stretch',             q: 'Quick 5-minute full body stretching routine',         color: '#9333ea' },
+    { label: '💧 Hydration',           q: 'How much water should I drink daily while exercising?','color': '#0284c7' },
+    { label: '😴 Recovery',            q: 'How important is sleep for fitness and recovery?',    color: '#64748b' },
+  ],
+  workout: [
+    { label: '🏠 Home HIIT',           q: 'Give me a 15-minute HIIT workout at home with no equipment', color: '#ef4444' },
+    { label: '💪 Upper Body',          q: 'Upper body workout routine for beginners at home',    color: '#2563eb' },
+    { label: '🦵 Leg Day',             q: 'Best leg day workout exercises I can do at home',     color: '#16a34a' },
+    { label: '🎯 Core & Abs',          q: 'Give me a 10-minute core and abs workout routine',    color: '#f59e0b' },
+  ],
+  nutrition: [
+    { label: '🥗 Meal Plan',           q: 'Give me a simple healthy 3-day meal plan',            color: '#16a34a' },
+    { label: '🥤 Pre-Workout',         q: 'What are the best foods to eat before a workout?',    color: '#ea580c' },
+    { label: '🍗 Post-Workout',        q: 'What should I eat after a workout for recovery?',     color: '#7c3aed' },
+  ],
+  motivation: [
+    { label: '⚡ Get Started',         q: 'I keep procrastinating my workouts. Help me get started today!', color: '#f59e0b' },
+    { label: '🏆 Stay Consistent',     q: 'How do I stay motivated to work out every day?',      color: '#16a34a' },
+  ],
+  habit: [
+    { label: '🌅 Morning Routine',     q: 'How do I create a healthy morning fitness routine?',  color: '#f59e0b' },
+    { label: '📊 Track Progress',      q: 'How should I track my fitness progress effectively?', color: '#2563eb' },
+    { label: '⏰ No Time',             q: 'I have only 15 minutes a day. What habits should I build?', color: '#7c3aed' },
+  ],
+  cardio: [
+    { label: '🏃 Running Plan',        q: 'Create a beginner running plan for 4 weeks',          color: '#ef4444' },
+    { label: '🚴 Cycling',             q: 'Benefits of cycling for fitness and how to start',    color: '#2563eb' },
+    { label: '🪂 Jump Rope',           q: 'Jump rope workout routine for cardio and fat loss',   color: '#16a34a' },
+  ],
+  yoga: [
+    { label: '🧘 Morning Yoga',        q: 'Give me a simple 10-minute morning yoga routine',     color: '#9333ea' },
+    { label: '💆 Stress Relief',       q: 'Yoga poses and stretches for stress relief',          color: '#7c3aed' },
+    { label: '🦵 Flexibility',         q: 'Stretching exercises to improve flexibility',         color: '#0891b2' },
+  ],
+};
+
+const CATEGORY_META = {
+  all:        { title: '💬 Chat with Fitness Buddy',  sub: 'Ask me anything about fitness, nutrition, or motivation' },
+  workout:    { title: '🏋️ Workouts',                 sub: 'Home exercises, routines, and training plans' },
+  nutrition:  { title: '🥗 Nutrition',                sub: 'Healthy meals, diet tips, and nutrition guidance' },
+  motivation: { title: '💪 Motivation',               sub: 'Get inspired and stay consistent with your goals' },
+  habit:      { title: '📅 Habit Building',           sub: 'Build lasting fitness habits and routines' },
+  cardio:     { title: '🏃 Cardio Training',          sub: 'Running, cycling, and cardio workouts' },
+  yoga:       { title: '🧘 Yoga & Stretching',        sub: 'Flexibility, relaxation, and mindful movement' },
+};
+
+// ── Utilities ──────────────────────────────────────────────────
+let toastTimer = null;
+function showToast(msg, type = 'error') {
+  toast.textContent = msg;
+  toast.className = `toast ${type} show`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 4000);
+}
+
+function scrollToBottom() {
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+function nowTime() {
+  return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+/** Markdown-lite → HTML */
+function renderMarkdown(text) {
+  return text
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/^#{1,3}\s+(.+)$/gm, '<h3>$1</h3>')
+    .replace(/^[-•]\s+(.+)$/gm, '<li>$1</li>')
+    .replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>[\s\S]*?<\/li>(?:\s*<li>[\s\S]*?<\/li>)*)/g, '<ul>$1</ul>')
+    .replace(/\n{2,}/g, '</p><p>')
+    .replace(/\n/g, '<br>')
+    .replace(/^(?!<[hup])(.)/m, '<p>$1')
+    .replace(/([^>])$/m, '$1</p>');
+}
+
+// ── Append message ─────────────────────────────────────────────
+function appendMessage(role, text) {
+  const wrapper = document.createElement('div');
+  wrapper.className = `message ${role}`;
+
+  const avatar = document.createElement('div');
+  avatar.className = 'avatar';
+  avatar.textContent = role === 'user' ? '👤' : '🤖';
+
+  const col = document.createElement('div');
+
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  if (role === 'bot') {
+    bubble.innerHTML = renderMarkdown(text);
+  } else {
+    bubble.textContent = text;
+  }
+
+  const meta = document.createElement('div');
+  meta.className = 'msg-meta';
+  meta.textContent = nowTime();
+
+  col.appendChild(bubble);
+  col.appendChild(meta);
+  wrapper.appendChild(avatar);
+  wrapper.appendChild(col);
+  chatWindow.appendChild(wrapper);
+  scrollToBottom();
+  return wrapper;
+}
+
+// ── Typing indicator ───────────────────────────────────────────
+function showTyping() {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'message bot';
+  wrapper.id = 'typingIndicator';
+
+  const avatar = document.createElement('div');
+  avatar.className = 'avatar';
+  avatar.textContent = '🤖';
+
+  const indicator = document.createElement('div');
+  indicator.className = 'typing-indicator';
+  indicator.innerHTML = '<span class="typing-label">Thinking…</span><div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+
+  wrapper.appendChild(avatar);
+  wrapper.appendChild(indicator);
+  chatWindow.appendChild(wrapper);
+  scrollToBottom();
+}
+function hideTyping() {
+  const el = document.getElementById('typingIndicator');
+  if (el) el.remove();
+}
+
+// ── Send message ───────────────────────────────────────────────
+async function sendMessage(text) {
+  text = text.trim();
+  if (!text || isLoading) return;
+
+  isLoading = true;
+  sendBtn.disabled = true;
+  userInput.value = '';
+  userInput.style.height = 'auto';
+  charCount.textContent = '0 / 1000';
+  charCount.classList.remove('warn');
+
+  appendMessage('user', text);
+  chatHistory.push({ role: 'user', content: text });
+  showTyping();
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text, history: chatHistory.slice(-10) }),
+    });
+
+    const data = await res.json();
+    hideTyping();
+
+    if (!res.ok) {
+      showToast(data.error || 'Something went wrong. Please try again.');
+      chatHistory.pop();
+      return;
+    }
+
+    appendMessage('bot', data.reply);
+    chatHistory.push({ role: 'assistant', content: data.reply });
+
+  } catch {
+    hideTyping();
+    showToast('Network error — please check your connection.');
+    chatHistory.pop();
+  } finally {
+    isLoading = false;
+    sendBtn.disabled = false;
+    userInput.focus();
+  }
+}
+
+function sendQuick(text) { userInput.value = text; sendMessage(text); closeSidebar(); }
+
+// ── Tab chips ──────────────────────────────────────────────────
+let chipGroupEl = null;
+function showTabChips(cat) {
+  // Update active tab
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  const tabEl = document.getElementById('tab-' + cat);
+  if (tabEl) tabEl.classList.add('active');
+
+  // Update topbar
+  const meta = CATEGORY_META[cat];
+  if (meta) { topbarTitle.textContent = meta.title; topbarSub.textContent = meta.sub; }
+
+  // Remove old chip group
+  if (chipGroupEl) chipGroupEl.remove();
+
+  const chips = TAB_CHIPS[cat];
+  if (!chips) return;
+
+  chipGroupEl = document.createElement('div');
+  chipGroupEl.className = 'chip-group';
+
+  const title = document.createElement('div');
+  title.className = 'chip-group-title';
+  title.textContent = '✨ Quick suggestions — click to ask:';
+  chipGroupEl.appendChild(title);
+
+  chips.forEach(({ label, q, color }) => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-chip';
+    btn.textContent = label;
+    btn.style.color = color;
+    btn.style.borderColor = color + '55';
+    btn.style.background = color + '0d';
+    btn.addEventListener('mouseover', () => { btn.style.background = color + '18'; });
+    btn.addEventListener('mouseout',  () => { btn.style.background = color + '0d'; });
+    btn.onclick = () => { chipGroupEl.remove(); chipGroupEl = null; sendMessage(q); };
+    chipGroupEl.appendChild(btn);
+  });
+
+  chatWindow.appendChild(chipGroupEl);
+  scrollToBottom();
+}
+
+// ── Nav sidebar category ───────────────────────────────────────
+function setCategory(cat) {
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  showTabChips(cat);
+  closeSidebar();
+}
+
+// ── Clear chat ─────────────────────────────────────────────────
+function clearChat() {
+  if (!chatHistory.length) return;
+  chatWindow.innerHTML = '';
+  chatHistory.length = 0;
+  chipGroupEl = null;
+  showToast('Chat cleared', 'info');
+  loadWelcome();
+}
+
+// ── Mobile sidebar ─────────────────────────────────────────────
+function toggleSidebar() {
+  const sb = document.getElementById('sidebar');
+  const ov = document.getElementById('overlay');
+  const open = sb.classList.toggle('open');
+  ov.style.display = open ? 'block' : 'none';
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').style.display = 'none';
+}
+
+// ── Input events ───────────────────────────────────────────────
+userInput.addEventListener('input', () => {
+  userInput.style.height = 'auto';
+  userInput.style.height = Math.min(userInput.scrollHeight, 160) + 'px';
+  const len = userInput.value.length;
+  charCount.textContent = `${len} / 1000`;
+  charCount.classList.toggle('warn', len > 900);
+});
+
+userInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage(userInput.value);
+  }
+});
+
+sendBtn.addEventListener('click', () => sendMessage(userInput.value));
+
+// ── Welcome message ────────────────────────────────────────────
+async function loadWelcome() {
+  showTyping();
+  try {
+    const res  = await fetch('/api/chat/welcome');
+    const data = await res.json();
+    hideTyping();
+    appendMessage('bot', data.reply);
+    chatHistory.push({ role: 'assistant', content: data.reply });
+  } catch {
+    hideTyping();
+    appendMessage('bot', "👋 Hi! I'm **Fitness Buddy**, your personal AI health and fitness coach powered by IBM Granite!\n\nI can help you with:\n- 🏋️ Home workout routines\n- 🥗 Healthy meal ideas & nutrition\n- 💪 Daily motivation & inspiration\n- 📅 Habit building & consistency\n\nWhat are your fitness goals today?");
+  }
+}
+
+loadWelcome();
+</script>
+</body>
+</html>
