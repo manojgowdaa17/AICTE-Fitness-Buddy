@@ -46,7 +46,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal server error. Please try again.' });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`\n🏋️  Fitness Buddy is running!`);
   console.log(`   Local:   http://localhost:${PORT}`);
   console.log(`   Mode:    ${process.env.NODE_ENV || 'development'}\n`);
