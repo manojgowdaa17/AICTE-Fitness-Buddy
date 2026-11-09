@@ -3,35 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fitness Buddy – Your AI Health Coach</title>
+  <title>Fitness Buddy – AI Health Coach</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --primary:     #2563eb;
-      --primary-dk:  #1d4ed8;
-      --primary-lt:  #eff6ff;
-      --green:       #16a34a;
-      --green-lt:    #dcfce7;
-      --orange:      #ea580c;
-      --orange-lt:   #fff7ed;
-      --purple:      #7c3aed;
-      --purple-lt:   #f5f3ff;
-      --pink:        #db2777;
-      --pink-lt:     #fdf2f8;
-      --surface:     #f8fafc;
-      --bg:          #ffffff;
-      --border:      #e2e8f0;
-      --text:        #0f172a;
-      --text-2:      #334155;
-      --muted:       #64748b;
-      --user-bg:     #2563eb;
-      --bot-bg:      #f1f5f9;
-      --sidebar-w:   260px;
-      --radius:      16px;
-      --shadow-sm:   0 1px 4px rgba(0,0,0,.07);
-      --shadow:      0 4px 24px rgba(0,0,0,.10);
-      --shadow-lg:   0 8px 40px rgba(0,0,0,.14);
+      --primary:    #2563eb;
+      --primary-dk: #1d4ed8;
+      --primary-lt: #eff6ff;
+      --green:      #16a34a;
+      --green-lt:   #dcfce7;
+      --orange:     #ea580c;
+      --orange-lt:  #fff7ed;
+      --purple:     #7c3aed;
+      --purple-lt:  #f5f3ff;
+      --red:        #dc2626;
+      --surface:    #f8fafc;
+      --bg:         #ffffff;
+      --border:     #e2e8f0;
+      --text:       #0f172a;
+      --muted:      #64748b;
+      --user-bg:    #2563eb;
+      --bot-bg:     #f1f5f9;
+      --sidebar-w:  260px;
+      --radius:     14px;
+      --shadow:     0 4px 24px rgba(0,0,0,.10);
+      --shadow-lg:  0 8px 40px rgba(0,0,0,.14);
     }
 
     html, body { height: 100%; }
@@ -47,11 +44,11 @@
       color: var(--text);
     }
 
-    /* ── Layout shell ──────────────────────────────────────────── */
+    /* ── Shell ─────────────────────────────────────────────────── */
     .shell {
       display: flex;
       width: 100%;
-      max-width: 1200px;
+      max-width: 1240px;
       height: calc(100vh - 40px);
       min-height: 600px;
       border-radius: 24px;
@@ -60,9 +57,7 @@
       background: var(--bg);
     }
 
-    /* ══════════════════════════════════════════════════════════════
-       SIDEBAR
-    ══════════════════════════════════════════════════════════════ */
+    /* ════════════════════ SIDEBAR ════════════════════ */
     .sidebar {
       width: var(--sidebar-w);
       flex-shrink: 0;
@@ -71,986 +66,1312 @@
       flex-direction: column;
       overflow: hidden;
     }
-
-    /* Sidebar brand */
     .sidebar-brand {
-      padding: 24px 20px 18px;
+      padding: 22px 18px 16px;
       display: flex;
       align-items: center;
       gap: 12px;
       border-bottom: 1px solid rgba(255,255,255,.12);
+      flex-shrink: 0;
     }
     .brand-icon {
-      width: 44px; height: 44px;
+      width: 42px; height: 42px;
       background: rgba(255,255,255,.18);
-      border-radius: 14px;
+      border-radius: 12px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 22px;
-      flex-shrink: 0;
+      font-size: 20px; flex-shrink: 0;
     }
-    .brand-text h2 {
-      color: #fff;
-      font-size: 1.1rem;
-      font-weight: 700;
-      line-height: 1.2;
-    }
-    .brand-text span {
-      color: rgba(255,255,255,.65);
-      font-size: .72rem;
-    }
+    .brand-text h2 { color: #fff; font-size: 1.05rem; font-weight: 700; line-height: 1.2; }
+    .brand-text span { color: rgba(255,255,255,.6); font-size: .7rem; }
 
-    /* Sidebar status pill */
     .status-pill {
-      margin: 14px 16px 0;
+      margin: 12px 14px 0;
       background: rgba(255,255,255,.1);
       border: 1px solid rgba(255,255,255,.18);
-      border-radius: 10px;
-      padding: 10px 13px;
-      display: flex;
-      align-items: center;
-      gap: 9px;
-    }
-    .status-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: #4ade80;
-      box-shadow: 0 0 0 3px rgba(74,222,128,.25);
+      border-radius: 9px;
+      padding: 8px 12px;
+      display: flex; align-items: center; gap: 8px;
       flex-shrink: 0;
     }
-    .status-pill span { color: rgba(255,255,255,.85); font-size: .78rem; }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 0 3px rgba(74,222,128,.25); flex-shrink: 0; }
+    .status-pill span { color: rgba(255,255,255,.82); font-size: .75rem; }
 
-    /* Sidebar section label */
     .sidebar-label {
-      padding: 18px 16px 6px;
-      color: rgba(255,255,255,.45);
-      font-size: .68rem;
-      font-weight: 700;
-      letter-spacing: .08em;
-      text-transform: uppercase;
+      padding: 16px 14px 5px;
+      color: rgba(255,255,255,.42);
+      font-size: .65rem; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase; flex-shrink: 0;
     }
 
-    /* Sidebar nav buttons */
-    .sidebar-nav {
-      padding: 0 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
+    .sidebar-nav { padding: 0 8px; display: flex; flex-direction: column; gap: 2px; flex-shrink: 0; }
     .nav-btn {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      border: none;
-      background: transparent;
-      border-radius: 12px;
-      cursor: pointer;
-      color: rgba(255,255,255,.78);
-      font-size: .84rem;
-      font-weight: 500;
-      font-family: inherit;
-      text-align: left;
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 11px;
+      border: none; background: transparent; border-radius: 11px;
+      cursor: pointer; color: rgba(255,255,255,.75);
+      font-size: .82rem; font-weight: 500; font-family: inherit; text-align: left;
       transition: background .15s, color .15s;
     }
-    .nav-btn:hover, .nav-btn.active {
-      background: rgba(255,255,255,.15);
-      color: #fff;
-    }
-    .nav-btn .nav-icon {
-      width: 30px; height: 30px;
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 15px;
-      flex-shrink: 0;
-    }
+    .nav-btn:hover, .nav-btn.active { background: rgba(255,255,255,.15); color: #fff; }
+    .nav-icon { width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
 
-    /* Sidebar quick-send tiles */
-    .sidebar-label-2 {
-      padding: 16px 16px 6px;
-      color: rgba(255,255,255,.45);
-      font-size: .68rem;
-      font-weight: 700;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
     .quick-tiles {
-      padding: 0 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      overflow-y: auto;
-      flex: 1;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(255,255,255,.15) transparent;
+      padding: 0 8px; display: flex; flex-direction: column; gap: 2px;
+      overflow-y: auto; flex: 1;
+      scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.12) transparent;
     }
     .quick-tile {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 9px 12px;
-      border: none;
-      background: transparent;
-      border-radius: 10px;
-      cursor: pointer;
-      text-align: left;
-      transition: background .15s;
-      font-family: inherit;
+      display: flex; align-items: center; gap: 9px;
+      padding: 8px 11px; border: none; background: transparent;
+      border-radius: 9px; cursor: pointer; text-align: left;
+      transition: background .15s; font-family: inherit;
     }
     .quick-tile:hover { background: rgba(255,255,255,.1); }
-    .tile-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-    .quick-tile span {
-      color: rgba(255,255,255,.72);
-      font-size: .8rem;
-      line-height: 1.3;
-    }
+    .tile-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .quick-tile span { color: rgba(255,255,255,.7); font-size: .78rem; line-height: 1.3; }
     .quick-tile:hover span { color: #fff; }
 
-    /* Sidebar footer */
     .sidebar-foot {
-      padding: 14px 16px;
+      padding: 12px 14px;
       border-top: 1px solid rgba(255,255,255,.1);
-      color: rgba(255,255,255,.4);
-      font-size: .68rem;
-      line-height: 1.5;
+      color: rgba(255,255,255,.38); font-size: .67rem; line-height: 1.5; flex-shrink: 0;
     }
     .ibm-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: rgba(255,255,255,.12);
-      border: 1px solid rgba(255,255,255,.2);
-      border-radius: 6px;
-      padding: 3px 8px;
-      color: rgba(255,255,255,.75);
-      font-size: .7rem;
-      font-weight: 600;
-      margin-bottom: 6px;
+      display: inline-flex; align-items: center; gap: 4px;
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+      border-radius: 5px; padding: 2px 7px;
+      color: rgba(255,255,255,.72); font-size: .68rem; font-weight: 600; margin-bottom: 5px;
     }
 
-    /* ══════════════════════════════════════════════════════════════
-       MAIN PANEL
-    ══════════════════════════════════════════════════════════════ */
-    .main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-      background: var(--bg);
-    }
+    /* ════════════════════ MAIN ════════════════════ */
+    .main { flex: 1; display: flex; flex-direction: column; min-width: 0; background: var(--bg); }
 
-    /* Top bar */
+    /* ── Top bar ─────────────────────────────────────────────── */
     .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 28px;
+      display: flex; align-items: center;
+      padding: 13px 24px;
       border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-      background: var(--bg);
-      gap: 16px;
+      flex-shrink: 0; gap: 12px;
     }
-    .topbar-left h3 {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--text);
+    .hamburger {
+      display: none; width: 34px; height: 34px;
+      border: 1.5px solid var(--border); background: var(--surface);
+      border-radius: 9px; cursor: pointer;
+      align-items: center; justify-content: center; font-size: 17px;
     }
-    .topbar-left p {
-      font-size: .78rem;
-      color: var(--muted);
-      margin-top: 1px;
-    }
-    .topbar-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-shrink: 0;
-    }
+    .topbar-left { flex: 1; min-width: 0; }
+    .topbar-left h3 { font-size: .97rem; font-weight: 700; color: var(--text); }
+    .topbar-left p  { font-size: .75rem; color: var(--muted); margin-top: 1px; }
+    .topbar-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
     .icon-btn {
-      width: 36px; height: 36px;
-      border: 1.5px solid var(--border);
-      background: var(--surface);
-      border-radius: 10px;
-      cursor: pointer;
+      width: 34px; height: 34px;
+      border: 1.5px solid var(--border); background: var(--surface);
+      border-radius: 9px; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      font-size: 16px;
-      transition: background .15s, border-color .15s;
-      position: relative;
+      font-size: 15px; transition: background .15s, border-color .15s;
     }
     .icon-btn:hover { background: var(--primary-lt); border-color: var(--primary); }
-    .icon-btn[title]:hover::after {
-      content: attr(title);
-      position: absolute;
-      bottom: -30px;
-      left: 50%; transform: translateX(-50%);
-      background: var(--text);
-      color: #fff;
-      font-size: .68rem;
-      padding: 3px 8px;
-      border-radius: 5px;
-      white-space: nowrap;
-      pointer-events: none;
-      z-index: 10;
+
+    /* Auth buttons in topbar */
+    .auth-area { display: flex; align-items: center; gap: 8px; }
+    .btn-ghost {
+      padding: 7px 14px; border: 1.5px solid var(--border);
+      background: transparent; border-radius: 9px;
+      cursor: pointer; font-size: .8rem; font-weight: 600; color: var(--muted);
+      font-family: inherit; transition: all .15s; white-space: nowrap;
+    }
+    .btn-ghost:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-lt); }
+    .btn-solid {
+      padding: 7px 16px;
+      background: var(--primary); border: none; border-radius: 9px;
+      cursor: pointer; font-size: .8rem; font-weight: 600; color: #fff;
+      font-family: inherit; transition: background .15s; white-space: nowrap;
+    }
+    .btn-solid:hover { background: var(--primary-dk); }
+    .user-pill {
+      display: flex; align-items: center; gap: 8px;
+      padding: 5px 12px 5px 5px;
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: 20px; cursor: pointer; font-size: .8rem; font-weight: 600;
+      color: var(--text); transition: border-color .15s;
+    }
+    .user-pill:hover { border-color: var(--primary); }
+    .user-avatar {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--primary); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .72rem; font-weight: 700;
     }
     .clear-btn {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 7px 14px;
-      border: 1.5px solid var(--border);
-      background: var(--surface);
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: .8rem;
-      font-weight: 600;
-      color: var(--muted);
-      font-family: inherit;
-      transition: background .15s, border-color .15s, color .15s;
+      display: flex; align-items: center; gap: 5px;
+      padding: 7px 13px; border: 1.5px solid var(--border);
+      background: var(--surface); border-radius: 9px;
+      cursor: pointer; font-size: .78rem; font-weight: 600; color: var(--muted);
+      font-family: inherit; transition: all .15s;
     }
-    .clear-btn:hover { background: #fef2f2; border-color: #fca5a5; color: #dc2626; }
+    .clear-btn:hover { background: #fef2f2; border-color: #fca5a5; color: var(--red); }
 
-    /* Category tab strip */
-    .tab-strip {
-      display: flex;
-      gap: 6px;
-      padding: 12px 28px;
-      border-bottom: 1px solid var(--border);
-      overflow-x: auto;
-      flex-shrink: 0;
-      scrollbar-width: none;
-      background: var(--surface);
-    }
-    .tab-strip::-webkit-scrollbar { display: none; }
-    .tab {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 7px 16px;
-      border: 1.5px solid var(--border);
+    /* ── Page tabs (Chat / Plans / Progress) ─────────────────── */
+    .page-tabs {
+      display: flex; gap: 0;
+      border-bottom: 2px solid var(--border);
+      flex-shrink: 0; padding: 0 24px;
       background: var(--bg);
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: .8rem;
-      font-weight: 600;
-      color: var(--muted);
-      white-space: nowrap;
-      font-family: inherit;
-      transition: all .15s;
-      flex-shrink: 0;
     }
-    .tab:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-lt); }
-    .tab.active { background: var(--primary); border-color: var(--primary); color: #fff; }
-    .tab-count {
-      background: rgba(255,255,255,.3);
-      border-radius: 10px;
-      padding: 1px 6px;
-      font-size: .68rem;
+    .page-tab {
+      display: flex; align-items: center; gap: 6px;
+      padding: 12px 18px;
+      border: none; background: transparent;
+      cursor: pointer; font-size: .85rem; font-weight: 600;
+      color: var(--muted); font-family: inherit;
+      border-bottom: 2px solid transparent; margin-bottom: -2px;
+      transition: color .15s, border-color .15s; white-space: nowrap;
     }
-    .tab:not(.active) .tab-count { background: var(--surface); color: var(--muted); }
+    .page-tab:hover { color: var(--primary); }
+    .page-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
 
-    /* ── Chat window ──────────────────────────────────────────── */
+    /* ── Category strip (Chat page only) ─────────────────────── */
+    .cat-strip {
+      display: flex; gap: 6px;
+      padding: 10px 24px;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto; flex-shrink: 0;
+      scrollbar-width: none; background: var(--surface);
+    }
+    .cat-strip::-webkit-scrollbar { display: none; }
+    .cat-tab {
+      display: flex; align-items: center; gap: 5px;
+      padding: 6px 14px;
+      border: 1.5px solid var(--border); background: var(--bg);
+      border-radius: 20px; cursor: pointer;
+      font-size: .78rem; font-weight: 600; color: var(--muted);
+      white-space: nowrap; font-family: inherit; transition: all .15s; flex-shrink: 0;
+    }
+    .cat-tab:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-lt); }
+    .cat-tab.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+    /* ════════════════════ CHAT PAGE ════════════════════ */
+    #page-chat { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+
     .chat-window {
-      flex: 1;
-      overflow-y: auto;
-      padding: 24px 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
+      flex: 1; overflow-y: auto;
+      padding: 22px 26px;
+      display: flex; flex-direction: column; gap: 16px;
       scroll-behavior: smooth;
     }
-    .chat-window::-webkit-scrollbar { width: 5px; }
-    .chat-window::-webkit-scrollbar-track { background: transparent; }
+    .chat-window::-webkit-scrollbar { width: 4px; }
     .chat-window::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
-    /* Category chips inside chat (shown when tab is clicked) */
-    .chip-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      padding: 14px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      animation: fadeUp .2s ease;
-    }
-    .chip-group-title {
-      width: 100%;
-      font-size: .78rem;
-      font-weight: 700;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-    .cat-chip {
-      padding: 7px 14px;
-      border: 1.5px solid var(--border);
-      background: var(--bg);
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: .8rem;
-      font-weight: 600;
-      font-family: inherit;
-      transition: all .15s;
-    }
-    .cat-chip:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0,0,0,.1); }
-
-    /* ── Messages ─────────────────────────────────────────────── */
-    .message {
-      display: flex;
-      gap: 12px;
-      max-width: 88%;
-      animation: fadeUp .25s ease;
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(8px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    .message { display: flex; gap: 11px; max-width: 88%; animation: fadeUp .22s ease; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
     .message.user { align-self: flex-end; flex-direction: row-reverse; }
     .message.bot  { align-self: flex-start; }
-
     .avatar {
-      width: 36px; height: 36px;
-      border-radius: 50%;
+      width: 34px; height: 34px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 17px;
-      flex-shrink: 0;
-      margin-top: 2px;
+      font-size: 16px; flex-shrink: 0; margin-top: 2px;
     }
     .message.user .avatar { background: var(--user-bg); box-shadow: 0 2px 8px rgba(37,99,235,.3); }
     .message.bot  .avatar { background: var(--green-lt); border: 1.5px solid #86efac; }
-
     .bubble {
-      padding: 13px 17px;
-      border-radius: var(--radius);
-      line-height: 1.65;
-      font-size: .91rem;
-      word-break: break-word;
+      padding: 12px 16px; border-radius: var(--radius);
+      line-height: 1.65; font-size: .9rem; word-break: break-word;
     }
     .message.user .bubble {
-      background: var(--user-bg);
-      color: #fff;
-      border-bottom-right-radius: 4px;
-      box-shadow: 0 2px 10px rgba(37,99,235,.2);
+      background: var(--user-bg); color: #fff;
+      border-bottom-right-radius: 4px; box-shadow: 0 2px 10px rgba(37,99,235,.18);
     }
     .message.bot .bubble {
-      background: var(--bot-bg);
-      color: var(--text);
-      border-bottom-left-radius: 4px;
-      border: 1px solid var(--border);
+      background: var(--bot-bg); color: var(--text);
+      border-bottom-left-radius: 4px; border: 1px solid var(--border);
     }
     .bubble strong { font-weight: 700; }
-    .bubble em     { font-style: italic; }
-    .bubble ul, .bubble ol { padding-left: 20px; margin: 7px 0; }
-    .bubble li { margin: 4px 0; }
-    .bubble p  { margin: 7px 0; }
+    .bubble em { font-style: italic; }
+    .bubble ul, .bubble ol { padding-left: 18px; margin: 6px 0; }
+    .bubble li { margin: 3px 0; }
+    .bubble p  { margin: 6px 0; }
     .bubble p:first-child { margin-top: 0; }
     .bubble p:last-child  { margin-bottom: 0; }
-    .bubble h3 { font-size: .95rem; font-weight: 700; margin: 10px 0 4px; color: var(--primary); }
-
-    /* Message meta (timestamp) */
-    .msg-meta {
-      font-size: .68rem;
-      color: var(--muted);
-      margin-top: 4px;
-      padding: 0 2px;
-    }
+    .bubble h3 { font-size: .93rem; font-weight: 700; margin: 8px 0 3px; color: var(--primary); }
+    .msg-meta { font-size: .66rem; color: var(--muted); margin-top: 3px; padding: 0 2px; }
     .message.user .msg-meta { text-align: right; }
 
-    /* Typing indicator */
     .typing-indicator {
-      display: flex; align-items: center; gap: 6px;
-      padding: 13px 17px;
-      background: var(--bot-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      border-bottom-left-radius: 4px;
-      width: fit-content;
+      display: flex; align-items: center; gap: 5px;
+      padding: 12px 16px;
+      background: var(--bot-bg); border: 1px solid var(--border);
+      border-radius: var(--radius); border-bottom-left-radius: 4px; width: fit-content;
     }
-    .typing-label { font-size: .78rem; color: var(--muted); margin-right: 4px; }
-    .dot {
-      width: 8px; height: 8px;
-      background: var(--muted);
-      border-radius: 50%;
-      animation: bounce 1.2s infinite;
-    }
+    .typing-label { font-size: .76rem; color: var(--muted); margin-right: 3px; }
+    .dot { width: 7px; height: 7px; background: var(--muted); border-radius: 50%; animation: bounce 1.2s infinite; }
     .dot:nth-child(3) { animation-delay: .2s; }
     .dot:nth-child(4) { animation-delay: .4s; }
-    @keyframes bounce {
-      0%, 60%, 100% { transform: translateY(0); }
-      30%            { transform: translateY(-6px); }
-    }
+    @keyframes bounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
 
-    /* ── Input area ───────────────────────────────────────────── */
+    /* chip group in chat */
+    .chip-group {
+      display: flex; flex-wrap: wrap; gap: 7px;
+      padding: 12px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      animation: fadeUp .2s ease;
+    }
+    .chip-group-title { width: 100%; font-size: .75rem; font-weight: 700; color: var(--muted); margin-bottom: 3px; }
+    .cat-chip {
+      padding: 6px 13px; border: 1.5px solid var(--border);
+      background: var(--bg); border-radius: 20px; cursor: pointer;
+      font-size: .78rem; font-weight: 600; font-family: inherit; transition: all .15s;
+    }
+    .cat-chip:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0,0,0,.1); }
+
+    /* Input area */
     .input-area {
-      padding: 16px 28px 20px;
+      padding: 14px 24px 18px;
       border-top: 1px solid var(--border);
-      background: var(--bg);
-      flex-shrink: 0;
+      background: var(--bg); flex-shrink: 0;
     }
     .input-row {
-      display: flex;
-      align-items: flex-end;
-      gap: 10px;
-      background: var(--surface);
-      border: 2px solid var(--border);
-      border-radius: 18px;
-      padding: 8px 8px 8px 16px;
+      display: flex; align-items: flex-end; gap: 9px;
+      background: var(--surface); border: 2px solid var(--border);
+      border-radius: 17px; padding: 7px 7px 7px 15px;
       transition: border-color .15s, box-shadow .15s;
     }
-    .input-row:focus-within {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 4px rgba(37,99,235,.1);
-      background: #fff;
-    }
+    .input-row:focus-within { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(37,99,235,.09); background: #fff; }
     #userInput {
-      flex: 1;
-      resize: none;
-      border: none;
-      background: transparent;
-      padding: 6px 0;
-      font-size: .95rem;
-      font-family: inherit;
-      line-height: 1.55;
-      color: var(--text);
-      outline: none;
-      max-height: 160px;
-      overflow-y: auto;
-      min-height: 36px;
+      flex: 1; resize: none; border: none; background: transparent;
+      padding: 5px 0; font-size: .93rem; font-family: inherit;
+      line-height: 1.55; color: var(--text); outline: none;
+      max-height: 160px; overflow-y: auto; min-height: 34px;
     }
     #userInput::placeholder { color: #94a3b8; }
-    .input-actions {
-      display: flex;
-      align-items: flex-end;
-      gap: 6px;
-      flex-shrink: 0;
-    }
+    .input-actions { display: flex; align-items: flex-end; gap: 5px; flex-shrink: 0; }
     .attach-btn {
-      width: 38px; height: 38px;
-      border: none;
-      background: transparent;
-      border-radius: 10px;
-      cursor: pointer;
+      width: 36px; height: 36px; border: none; background: transparent;
+      border-radius: 9px; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      font-size: 18px;
-      color: var(--muted);
-      transition: background .15s, color .15s;
+      font-size: 17px; color: var(--muted); transition: background .15s, color .15s;
     }
     .attach-btn:hover { background: var(--primary-lt); color: var(--primary); }
     .send-btn {
-      width: 42px; height: 42px;
-      background: var(--primary);
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
+      width: 40px; height: 40px; background: var(--primary); border: none;
+      border-radius: 11px; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      transition: background .15s, transform .1s, box-shadow .15s;
-      box-shadow: 0 2px 8px rgba(37,99,235,.3);
+      transition: background .15s, transform .1s; box-shadow: 0 2px 8px rgba(37,99,235,.3);
     }
-    .send-btn:hover:not(:disabled) { background: var(--primary-dk); box-shadow: 0 4px 14px rgba(37,99,235,.4); }
+    .send-btn:hover:not(:disabled) { background: var(--primary-dk); }
     .send-btn:active:not(:disabled) { transform: scale(.93); }
     .send-btn:disabled { background: #cbd5e1; box-shadow: none; cursor: not-allowed; }
     .send-btn svg { fill: #fff; }
-    .input-hint {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 8px;
-      padding: 0 4px;
-    }
-    .input-hint span { font-size: .72rem; color: var(--muted); }
-    #charCount { font-size: .72rem; color: var(--muted); }
-    #charCount.warn { color: #ea580c; }
+    .input-hint { display: flex; justify-content: space-between; margin-top: 7px; padding: 0 3px; }
+    .input-hint span { font-size: .7rem; color: var(--muted); }
+    #charCount { font-size: .7rem; color: var(--muted); }
+    #charCount.warn { color: var(--orange); }
 
-    /* ── Toast ────────────────────────────────────────────────── */
+    /* ════════════════════ PLANS PAGE ════════════════════ */
+    #page-plans { flex: 1; display: none; flex-direction: column; min-height: 0; overflow: hidden; }
+    #page-plans.active { display: flex; }
+
+    .plans-header {
+      padding: 18px 26px 14px;
+      border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+    .plans-header h2 { font-size: 1.1rem; font-weight: 700; }
+    .plans-header p  { font-size: .8rem; color: var(--muted); margin-top: 3px; }
+
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px; padding: 20px 26px;
+      overflow-y: auto; flex: 1;
+    }
+
+    .plan-card {
+      border: 2px solid var(--border); border-radius: 16px;
+      padding: 18px; cursor: pointer;
+      transition: border-color .15s, box-shadow .15s, transform .15s;
+      background: var(--bg); display: flex; flex-direction: column; gap: 10px;
+    }
+    .plan-card:hover { border-color: var(--primary); box-shadow: 0 4px 20px rgba(37,99,235,.12); transform: translateY(-2px); }
+    .plan-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+    .plan-emoji { font-size: 2rem; line-height: 1; }
+    .plan-level-badge {
+      font-size: .68rem; font-weight: 700; padding: 3px 9px; border-radius: 20px;
+      background: var(--surface); color: var(--muted); border: 1px solid var(--border);
+    }
+    .plan-card h3 { font-size: .97rem; font-weight: 700; }
+    .plan-card p  { font-size: .8rem; color: var(--muted); line-height: 1.5; }
+    .plan-meta { display: flex; gap: 10px; flex-wrap: wrap; }
+    .plan-meta span {
+      font-size: .72rem; color: var(--muted);
+      display: flex; align-items: center; gap: 4px;
+    }
+    .plan-progress-bar {
+      height: 5px; background: var(--surface); border-radius: 3px; overflow: hidden;
+    }
+    .plan-progress-fill { height: 100%; border-radius: 3px; transition: width .4s; }
+    .plan-progress-label { font-size: .7rem; color: var(--muted); text-align: right; margin-top: 3px; }
+    .btn-start {
+      margin-top: auto; padding: 9px; border: none; border-radius: 10px;
+      cursor: pointer; font-size: .82rem; font-weight: 700; font-family: inherit;
+      color: #fff; transition: opacity .15s;
+    }
+    .btn-start:hover { opacity: .88; }
+
+    /* ── Session detail view ──────────────────────────────────── */
+    #page-session { flex: 1; display: none; flex-direction: column; min-height: 0; overflow: hidden; }
+    #page-session.active { display: flex; }
+
+    .session-header {
+      padding: 16px 26px 14px;
+      border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: none; border: none; cursor: pointer;
+      font-size: .82rem; font-weight: 600; color: var(--primary);
+      font-family: inherit; margin-bottom: 10px; padding: 0;
+    }
+    .back-btn:hover { text-decoration: underline; }
+    .session-header h2 { font-size: 1.05rem; font-weight: 700; }
+    .session-header p  { font-size: .8rem; color: var(--muted); margin-top: 3px; }
+
+    .exercise-list {
+      display: flex; flex-direction: column; gap: 12px;
+      padding: 18px 26px; overflow-y: auto; flex: 1;
+    }
+    .exercise-card {
+      border: 1.5px solid var(--border); border-radius: 14px; padding: 16px;
+      background: var(--bg); transition: border-color .15s;
+    }
+    .exercise-card.done { border-color: #86efac; background: #f0fdf4; }
+    .ex-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    .ex-name { font-size: .95rem; font-weight: 700; }
+    .ex-muscle {
+      font-size: .7rem; font-weight: 600; padding: 2px 8px;
+      background: var(--primary-lt); color: var(--primary); border-radius: 20px;
+      white-space: nowrap;
+    }
+    .ex-meta { display: flex; gap: 16px; margin: 8px 0 4px; }
+    .ex-meta span { font-size: .8rem; color: var(--muted); display: flex; align-items: center; gap: 4px; }
+    .ex-tip {
+      font-size: .78rem; color: var(--muted);
+      background: var(--surface); border-radius: 8px;
+      padding: 7px 11px; margin: 8px 0 10px; line-height: 1.5;
+      border-left: 3px solid var(--primary);
+    }
+    .ex-log-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .log-input {
+      width: 70px; padding: 6px 10px;
+      border: 1.5px solid var(--border); border-radius: 8px;
+      font-size: .82rem; font-family: inherit; color: var(--text);
+      background: var(--surface); outline: none; transition: border-color .15s;
+    }
+    .log-input:focus { border-color: var(--primary); background: #fff; }
+    .log-label { font-size: .78rem; color: var(--muted); }
+    .btn-log {
+      padding: 7px 14px; background: var(--primary); color: #fff;
+      border: none; border-radius: 8px; cursor: pointer;
+      font-size: .78rem; font-weight: 600; font-family: inherit;
+      transition: background .15s;
+    }
+    .btn-log:hover { background: var(--primary-dk); }
+    .btn-done-ex {
+      padding: 7px 14px; background: var(--green); color: #fff;
+      border: none; border-radius: 8px; cursor: pointer;
+      font-size: .78rem; font-weight: 600; font-family: inherit;
+      transition: background .15s;
+    }
+    .btn-done-ex:hover { background: #15803d; }
+    .done-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: .75rem; font-weight: 600; color: var(--green);
+    }
+
+    .session-complete-bar {
+      padding: 14px 26px; border-top: 1px solid var(--border);
+      flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .session-complete-bar p { font-size: .82rem; color: var(--muted); }
+    .btn-complete-session {
+      padding: 10px 22px; background: var(--green); color: #fff;
+      border: none; border-radius: 11px; cursor: pointer;
+      font-size: .85rem; font-weight: 700; font-family: inherit;
+      transition: background .15s, opacity .15s;
+    }
+    .btn-complete-session:hover { background: #15803d; }
+    .btn-complete-session:disabled { opacity: .5; cursor: not-allowed; }
+
+    /* ════════════════════ PROGRESS PAGE ════════════════════ */
+    #page-progress { flex: 1; display: none; flex-direction: column; min-height: 0; overflow: hidden; }
+    #page-progress.active { display: flex; }
+
+    .progress-header {
+      padding: 18px 26px 14px;
+      border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+    .progress-header h2 { font-size: 1.1rem; font-weight: 700; }
+    .progress-header p  { font-size: .8rem; color: var(--muted); margin-top: 3px; }
+
+    .progress-body { display: flex; flex-direction: column; gap: 16px; padding: 20px 26px; overflow-y: auto; flex: 1; }
+
+    .stats-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+    .stat-card {
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: 14px; padding: 16px; text-align: center;
+    }
+    .stat-num { font-size: 1.8rem; font-weight: 800; color: var(--primary); line-height: 1; }
+    .stat-label { font-size: .75rem; color: var(--muted); margin-top: 4px; }
+
+    .progress-plan-card {
+      border: 1.5px solid var(--border); border-radius: 14px; padding: 16px;
+      background: var(--bg);
+    }
+    .progress-plan-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .progress-plan-top .plan-emoji { font-size: 1.6rem; }
+    .progress-plan-top h3 { font-size: .95rem; font-weight: 700; flex: 1; }
+    .progress-plan-date { font-size: .72rem; color: var(--muted); }
+    .progress-bar-wrap { margin: 4px 0 8px; }
+    .progress-bar-bg { height: 8px; background: var(--surface); border-radius: 4px; overflow: hidden; border: 1px solid var(--border); }
+    .progress-bar-fill { height: 100%; border-radius: 4px; transition: width .5s; }
+    .progress-bar-labels { display: flex; justify-content: space-between; margin-top: 4px; }
+    .progress-bar-labels span { font-size: .7rem; color: var(--muted); }
+    .log-list { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+    .log-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 10px; background: var(--surface);
+      border-radius: 8px; font-size: .78rem; color: var(--text);
+    }
+    .log-item .log-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+    .empty-state {
+      text-align: center; padding: 48px 24px;
+      color: var(--muted);
+    }
+    .empty-state .empty-icon { font-size: 3rem; margin-bottom: 12px; }
+    .empty-state h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .empty-state p { font-size: .83rem; }
+
+    /* ════════════════════ MODALS ════════════════════ */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,.45);
+      display: none; align-items: center; justify-content: center;
+      z-index: 200; padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--bg); border-radius: 20px;
+      padding: 30px; width: 100%; max-width: 420px;
+      box-shadow: var(--shadow-lg); animation: fadeUp .2s ease;
+    }
+    .modal h2 { font-size: 1.25rem; font-weight: 800; margin-bottom: 6px; }
+    .modal .modal-sub { font-size: .83rem; color: var(--muted); margin-bottom: 22px; }
+    .form-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+    .form-field label { font-size: .8rem; font-weight: 600; color: var(--text); }
+    .form-field input {
+      padding: 10px 13px; border: 1.5px solid var(--border);
+      border-radius: 10px; font-size: .9rem; font-family: inherit;
+      color: var(--text); background: var(--surface); outline: none;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .form-field input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,.1); background: #fff; }
+    .form-error { font-size: .78rem; color: var(--red); margin-top: 2px; min-height: 16px; }
+    .btn-modal-primary {
+      width: 100%; padding: 11px; background: var(--primary); color: #fff;
+      border: none; border-radius: 11px; cursor: pointer;
+      font-size: .9rem; font-weight: 700; font-family: inherit;
+      transition: background .15s; margin-top: 4px;
+    }
+    .btn-modal-primary:hover { background: var(--primary-dk); }
+    .btn-modal-primary:disabled { background: #94a3b8; cursor: not-allowed; }
+    .modal-switch { font-size: .8rem; color: var(--muted); text-align: center; margin-top: 16px; }
+    .modal-switch a { color: var(--primary); cursor: pointer; font-weight: 600; }
+    .modal-switch a:hover { text-decoration: underline; }
+    .modal-close-btn {
+      position: absolute; top: 14px; right: 16px;
+      background: none; border: none; font-size: 1.1rem;
+      cursor: pointer; color: var(--muted); padding: 4px;
+    }
+    .modal { position: relative; }
+
+    /* ── Toast ───────────────────────────────────────────────── */
     .toast {
-      position: fixed;
-      bottom: 28px;
+      position: fixed; bottom: 24px;
       left: 50%; transform: translateX(-50%) translateY(20px);
-      background: #1e293b;
-      color: #fff;
-      padding: 11px 20px;
-      border-radius: 12px;
-      font-size: .84rem;
-      font-weight: 500;
+      background: #1e293b; color: #fff;
+      padding: 10px 20px; border-radius: 11px;
+      font-size: .82rem; font-weight: 500;
       box-shadow: 0 4px 20px rgba(0,0,0,.25);
-      opacity: 0;
-      pointer-events: none;
+      opacity: 0; pointer-events: none;
       transition: opacity .25s, transform .25s;
-      z-index: 999;
-      max-width: 90vw;
-      text-align: center;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      z-index: 999; max-width: 90vw; text-align: center;
     }
-    .toast.error { background: #dc2626; }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast.success { background: var(--green); }
+    .toast.error   { background: var(--red); }
+    .toast.show    { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    /* ── Hamburger (mobile) ───────────────────────────────────── */
-    .hamburger {
-      display: none;
-      width: 36px; height: 36px;
-      border: 1.5px solid var(--border);
-      background: var(--surface);
-      border-radius: 10px;
-      cursor: pointer;
-      align-items: center; justify-content: center;
-      font-size: 18px;
-    }
-
-    /* ── Responsive ───────────────────────────────────────────── */
+    /* ── Responsive ──────────────────────────────────────────── */
     @media (max-width: 768px) {
       body { padding: 0; }
       .shell { height: 100vh; border-radius: 0; max-width: 100%; }
-      .sidebar {
-        position: fixed; top: 0; left: -280px;
-        width: 280px; height: 100vh;
-        z-index: 100;
-        transition: left .25s ease;
-      }
+      .sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100vh; z-index: 100; transition: left .25s ease; }
       .sidebar.open { left: 0; }
       .hamburger { display: flex; }
-      .chat-window { padding: 16px 16px; }
-      .topbar { padding: 12px 16px; }
-      .tab-strip { padding: 10px 16px; }
-      .input-area { padding: 12px 16px 16px; }
-      .message { max-width: 94%; }
+      .chat-window, .exercise-list, .plans-grid, .progress-body { padding: 14px 16px; }
+      .topbar, .session-header, .plans-header, .progress-header { padding: 12px 16px; }
+      .input-area { padding: 10px 14px 14px; }
+      .page-tabs { padding: 0 16px; }
+      .cat-strip { padding: 8px 16px; }
+      .message { max-width: 95%; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .session-complete-bar { padding: 12px 16px; }
     }
-
-    @media (min-width: 769px) {
-      .hamburger { display: none; }
-    }
+    @media (min-width: 769px) { .hamburger { display: none !important; } }
   </style>
 </head>
 <body>
 
+<!-- ══════ SHELL ══════ -->
 <div class="shell">
 
-  <!-- ══════════════════════ SIDEBAR ══════════════════════ -->
+  <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
-
     <div class="sidebar-brand">
       <div class="brand-icon">🏋️</div>
-      <div class="brand-text">
-        <h2>Fitness Buddy</h2>
-        <span>AI Health Coach</span>
-      </div>
+      <div class="brand-text"><h2>Fitness Buddy</h2><span>AI Health Coach</span></div>
     </div>
-
     <div class="status-pill">
       <div class="status-dot"></div>
       <span>IBM Granite · Online</span>
     </div>
-
-    <div class="sidebar-label">Features</div>
+    <div class="sidebar-label">Navigate</div>
     <div class="sidebar-nav">
-      <button class="nav-btn active" onclick="setCategory('all')">
-        <div class="nav-icon" style="background:rgba(255,255,255,.15)">💬</div>
-        Chat with Buddy
+      <button class="nav-btn active" onclick="switchPage('chat');closeSidebar()">
+        <div class="nav-icon" style="background:rgba(255,255,255,.15)">💬</div>AI Chat
       </button>
-      <button class="nav-btn" onclick="setCategory('workout')">
-        <div class="nav-icon" style="background:rgba(239,68,68,.25)">🏃</div>
-        Workouts
+      <button class="nav-btn" onclick="switchPage('plans');closeSidebar()">
+        <div class="nav-icon" style="background:rgba(239,68,68,.22)">📋</div>Workout Plans
       </button>
-      <button class="nav-btn" onclick="setCategory('nutrition')">
-        <div class="nav-icon" style="background:rgba(34,197,94,.25)">🥗</div>
-        Nutrition
-      </button>
-      <button class="nav-btn" onclick="setCategory('motivation')">
-        <div class="nav-icon" style="background:rgba(234,179,8,.25)">⚡</div>
-        Motivation
-      </button>
-      <button class="nav-btn" onclick="setCategory('habit')">
-        <div class="nav-icon" style="background:rgba(168,85,247,.25)">📅</div>
-        Habit Building
+      <button class="nav-btn" onclick="switchPage('progress');closeSidebar()">
+        <div class="nav-icon" style="background:rgba(34,197,94,.22)">📊</div>My Progress
       </button>
     </div>
-
-    <div class="sidebar-label-2">Quick Ask</div>
+    <div class="sidebar-label">Quick Ask</div>
     <div class="quick-tiles">
-      <button class="quick-tile" onclick="sendQuick('Give me a 20-minute home workout routine')">
-        <div class="tile-dot" style="background:#f87171"></div>
-        <span>20-min Home Workout</span>
-      </button>
-      <button class="quick-tile" onclick="sendQuick('What are the best exercises for weight loss?')">
-        <div class="tile-dot" style="background:#fb923c"></div>
-        <span>Weight Loss Exercises</span>
-      </button>
-      <button class="quick-tile" onclick="sendQuick('Suggest a healthy high-protein breakfast')">
-        <div class="tile-dot" style="background:#4ade80"></div>
-        <span>High-Protein Breakfast</span>
-      </button>
-      <button class="quick-tile" onclick="sendQuick('Give me a 7-day meal plan for muscle gain')">
-        <div class="tile-dot" style="background:#34d399"></div>
-        <span>7-Day Muscle Gain Meal Plan</span>
-      </button>
-      <button class="quick-tile" onclick="sendQuick('I need motivation to start working out today')">
-        <div class="tile-dot" style="background:#facc15"></div>
-        <span>Motivate Me Today</span>
-      </button>
-      <button class="quick-tile" onclick="sendQuick('How do I build a morning workout habit?')">
-        <div class="tile-dot" style="background:#a78bfa"></div>
-        <span>Morning Workout Habit</span>
-      </button>
-      <button class="quick-tile" onclick="sendQuick('Quick 5-minute full body stretching routine')">
-        <div class="tile-dot" style="background:#60a5fa"></div>
-        <span>5-min Stretch Routine</span>
-      </button>
-      <button class="quick-tile" onclick="sendQuick('What are good foods to eat before a workout?')">
-        <div class="tile-dot" style="background:#f472b6"></div>
-        <span>Pre-Workout Foods</span>
-      </button>
-      <button class="quick-tile" onclick="sendQuick('Create a beginner 30-day fitness plan')">
-        <div class="tile-dot" style="background:#38bdf8"></div>
-        <span>30-Day Beginner Plan</span>
-      </button>
-      <button class="quick-tile" onclick="sendQuick('How much water should I drink per day?')">
-        <div class="tile-dot" style="background:#2dd4bf"></div>
-        <span>Daily Water Intake</span>
-      </button>
+      <button class="quick-tile" onclick="quickSend('Give me a 20-minute home workout routine')"><div class="tile-dot" style="background:#f87171"></div><span>20-min Home Workout</span></button>
+      <button class="quick-tile" onclick="quickSend('What are the best exercises for weight loss?')"><div class="tile-dot" style="background:#fb923c"></div><span>Weight Loss Exercises</span></button>
+      <button class="quick-tile" onclick="quickSend('Suggest a healthy high-protein breakfast')"><div class="tile-dot" style="background:#4ade80"></div><span>High-Protein Breakfast</span></button>
+      <button class="quick-tile" onclick="quickSend('Give me a 7-day meal plan for muscle gain')"><div class="tile-dot" style="background:#34d399"></div><span>7-Day Muscle Gain Plan</span></button>
+      <button class="quick-tile" onclick="quickSend('I need motivation to start working out today')"><div class="tile-dot" style="background:#facc15"></div><span>Motivate Me Today</span></button>
+      <button class="quick-tile" onclick="quickSend('How do I build a morning workout habit?')"><div class="tile-dot" style="background:#a78bfa"></div><span>Morning Workout Habit</span></button>
+      <button class="quick-tile" onclick="quickSend('Quick 5-minute full body stretching routine')"><div class="tile-dot" style="background:#60a5fa"></div><span>5-min Stretch Routine</span></button>
+      <button class="quick-tile" onclick="quickSend('What are good foods to eat before a workout?')"><div class="tile-dot" style="background:#f472b6"></div><span>Pre-Workout Foods</span></button>
+      <button class="quick-tile" onclick="quickSend('Create a beginner 30-day fitness plan')"><div class="tile-dot" style="background:#38bdf8"></div><span>30-Day Beginner Plan</span></button>
+      <button class="quick-tile" onclick="quickSend('How much water should I drink per day?')"><div class="tile-dot" style="background:#2dd4bf"></div><span>Daily Water Intake</span></button>
     </div>
-
     <div class="sidebar-foot">
       <div class="ibm-badge">⚡ IBM Granite AI</div><br>
       Not a substitute for medical advice.
     </div>
   </aside>
 
-  <!-- overlay for mobile sidebar -->
+  <!-- mobile overlay -->
   <div id="overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99" onclick="closeSidebar()"></div>
 
-  <!-- ══════════════════════ MAIN ══════════════════════════ -->
+  <!-- MAIN -->
   <div class="main">
 
     <!-- Top bar -->
     <div class="topbar">
-      <button class="hamburger" id="hamburger" onclick="toggleSidebar()">☰</button>
+      <button class="hamburger" onclick="toggleSidebar()">☰</button>
       <div class="topbar-left">
         <h3 id="topbarTitle">💬 Chat with Fitness Buddy</h3>
         <p id="topbarSub">Ask me anything about fitness, nutrition, or motivation</p>
       </div>
       <div class="topbar-actions">
-        <button class="icon-btn" title="Daily Tip" onclick="sendQuick('Give me a fitness tip for today')">💡</button>
-        <button class="icon-btn" title="Random Workout" onclick="sendQuick('Surprise me with a fun workout!')">🎲</button>
-        <button class="icon-btn" title="Calorie Info" onclick="sendQuick('How do I calculate my daily calorie needs?')">🔥</button>
-        <button class="clear-btn" onclick="clearChat()">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-          Clear Chat
+        <button class="icon-btn" title="Daily Tip" onclick="quickSend('Give me a fitness tip for today')">💡</button>
+        <button class="icon-btn" title="Random" onclick="quickSend('Surprise me with a fun workout!')">🎲</button>
+        <button class="clear-btn" id="clearChatBtn" onclick="clearChat()">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+          Clear
         </button>
-      </div>
-    </div>
-
-    <!-- Category tab strip -->
-    <div class="tab-strip">
-      <button class="tab active" id="tab-all"        onclick="showTabChips('all')">🌟 All <span class="tab-count">10</span></button>
-      <button class="tab"        id="tab-workout"    onclick="showTabChips('workout')">🏋️ Workouts <span class="tab-count">4</span></button>
-      <button class="tab"        id="tab-nutrition"  onclick="showTabChips('nutrition')">🥗 Nutrition <span class="tab-count">3</span></button>
-      <button class="tab"        id="tab-motivation" onclick="showTabChips('motivation')">💪 Motivation <span class="tab-count">2</span></button>
-      <button class="tab"        id="tab-habit"      onclick="showTabChips('habit')">📅 Habits <span class="tab-count">3</span></button>
-      <button class="tab"        id="tab-cardio"     onclick="showTabChips('cardio')">🏃 Cardio <span class="tab-count">3</span></button>
-      <button class="tab"        id="tab-yoga"       onclick="showTabChips('yoga')">🧘 Yoga &amp; Stretch <span class="tab-count">3</span></button>
-    </div>
-
-    <!-- Chat messages -->
-    <div class="chat-window" id="chatWindow"></div>
-
-    <!-- Input area (bigger box) -->
-    <div class="input-area">
-      <div class="input-row">
-        <textarea
-          id="userInput"
-          placeholder="Ask about workouts, meals, motivation, habits… (Shift+Enter for new line)"
-          rows="2"
-          maxlength="1000"
-        ></textarea>
-        <div class="input-actions">
-          <button class="attach-btn" title="Surprise workout" onclick="sendQuick('Give me a random fun workout!')">🎲</button>
-          <button class="send-btn" id="sendBtn" title="Send (Enter)">
-            <svg width="18" height="18" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-          </button>
+        <!-- Auth area -->
+        <div class="auth-area" id="authArea">
+          <button class="btn-ghost" onclick="openModal('login')">Log In</button>
+          <button class="btn-solid" onclick="openModal('signup')">Sign Up</button>
+        </div>
+        <div id="userArea" style="display:none">
+          <div class="user-pill" onclick="toggleUserMenu()">
+            <div class="user-avatar" id="userInitials">U</div>
+            <span id="userName">User</span>
+          </div>
+          <div id="userMenu" style="display:none;position:absolute;right:24px;top:62px;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:6px;box-shadow:var(--shadow);z-index:50;min-width:160px;">
+            <div style="padding:8px 12px 6px;font-size:.78rem;font-weight:700;color:var(--muted);border-bottom:1px solid var(--border);margin-bottom:4px" id="userMenuEmail"></div>
+            <button onclick="switchPage('progress');toggleUserMenu()" style="width:100%;text-align:left;padding:8px 12px;border:none;background:none;cursor:pointer;font-size:.83rem;border-radius:8px;font-family:inherit;" onmouseover="this.style.background='var(--surface)'" onmouseout="this.style.background='none'">📊 My Progress</button>
+            <button onclick="doLogout()" style="width:100%;text-align:left;padding:8px 12px;border:none;background:none;cursor:pointer;font-size:.83rem;border-radius:8px;color:var(--red);font-family:inherit;" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='none'">🚪 Log Out</button>
+          </div>
         </div>
       </div>
-      <div class="input-hint">
-        <span>Press <strong>Enter</strong> to send · <strong>Shift+Enter</strong> for new line</span>
-        <span id="charCount">0 / 1000</span>
+    </div>
+
+    <!-- Page tabs -->
+    <div class="page-tabs">
+      <button class="page-tab active" id="ptab-chat"     onclick="switchPage('chat')">💬 AI Chat</button>
+      <button class="page-tab"        id="ptab-plans"    onclick="switchPage('plans')">📋 Workout Plans</button>
+      <button class="page-tab"        id="ptab-progress" onclick="switchPage('progress')">📊 Progress</button>
+    </div>
+
+    <!-- ── CHAT PAGE ── -->
+    <div id="page-chat" style="flex:1;display:flex;flex-direction:column;min-height:0;">
+      <!-- Category strip -->
+      <div class="cat-strip">
+        <button class="cat-tab active" id="ctab-all"        onclick="showCatChips('all')">🌟 All</button>
+        <button class="cat-tab"        id="ctab-workout"    onclick="showCatChips('workout')">🏋️ Workouts</button>
+        <button class="cat-tab"        id="ctab-nutrition"  onclick="showCatChips('nutrition')">🥗 Nutrition</button>
+        <button class="cat-tab"        id="ctab-motivation" onclick="showCatChips('motivation')">💪 Motivation</button>
+        <button class="cat-tab"        id="ctab-habit"      onclick="showCatChips('habit')">📅 Habits</button>
+        <button class="cat-tab"        id="ctab-cardio"     onclick="showCatChips('cardio')">🏃 Cardio</button>
+        <button class="cat-tab"        id="ctab-yoga"       onclick="showCatChips('yoga')">🧘 Yoga</button>
+      </div>
+      <div class="chat-window" id="chatWindow"></div>
+      <div class="input-area">
+        <div class="input-row">
+          <textarea id="userInput" placeholder="Ask about workouts, meals, motivation… (Shift+Enter for new line)" rows="2" maxlength="1000"></textarea>
+          <div class="input-actions">
+            <button class="attach-btn" onclick="quickSend('Give me a random fun workout!')">🎲</button>
+            <button class="send-btn" id="sendBtn">
+              <svg width="17" height="17" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="input-hint">
+          <span><strong>Enter</strong> to send · <strong>Shift+Enter</strong> new line</span>
+          <span id="charCount">0 / 1000</span>
+        </div>
       </div>
     </div>
+
+    <!-- ── PLANS PAGE ── -->
+    <div id="page-plans">
+      <div class="plans-header">
+        <h2>🗓 Workout Plans</h2>
+        <p>Choose a plan to follow. Click any plan to explore its sessions and exercises.</p>
+      </div>
+      <div class="plans-grid" id="plansGrid">
+        <div class="empty-state"><div class="empty-icon">⏳</div><h3>Loading plans…</h3></div>
+      </div>
+    </div>
+
+    <!-- ── SESSION DETAIL PAGE ── -->
+    <div id="page-session">
+      <div class="session-header">
+        <button class="back-btn" id="backToPlansBtn" onclick="switchPage('plans')">← Back to Plans</button>
+        <h2 id="sessionTitle">Session</h2>
+        <p  id="sessionMeta"></p>
+      </div>
+      <div class="exercise-list" id="exerciseList"></div>
+      <div class="session-complete-bar">
+        <p id="sessionCompleteHint">Mark exercises done, then complete the session.</p>
+        <button class="btn-complete-session" id="completeSessionBtn" onclick="completeSession()">✅ Complete Session</button>
+      </div>
+    </div>
+
+    <!-- ── PROGRESS PAGE ── -->
+    <div id="page-progress">
+      <div class="progress-header">
+        <h2>📊 My Progress</h2>
+        <p id="progressSubtitle">Track your workout sessions and exercise logs.</p>
+      </div>
+      <div class="progress-body" id="progressBody">
+        <div class="empty-state"><div class="empty-icon">⏳</div><h3>Loading…</h3></div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /shell -->
+
+<!-- ── LOGIN MODAL ── -->
+<div class="modal-overlay" id="modalLogin">
+  <div class="modal">
+    <button class="modal-close-btn" onclick="closeModal('login')">✕</button>
+    <h2>Welcome back 👋</h2>
+    <p class="modal-sub">Log in to save your progress and plans.</p>
+    <div class="form-field"><label>Email</label><input type="email" id="loginEmail" placeholder="you@example.com" /></div>
+    <div class="form-field"><label>Password</label><input type="password" id="loginPassword" placeholder="Your password" /></div>
+    <div class="form-error" id="loginError"></div>
+    <button class="btn-modal-primary" id="loginBtn" onclick="doLogin()">Log In</button>
+    <p class="modal-switch">Don't have an account? <a onclick="openModal('signup')">Sign Up</a></p>
+    <p class="modal-switch" style="margin-top:6px;font-size:.75rem;">Or <a onclick="closeModal('login')">continue without logging in</a></p>
+  </div>
+</div>
+
+<!-- ── SIGNUP MODAL ── -->
+<div class="modal-overlay" id="modalSignup">
+  <div class="modal">
+    <button class="modal-close-btn" onclick="closeModal('signup')">✕</button>
+    <h2>Create account 🏋️</h2>
+    <p class="modal-sub">Sign up free to track workouts and progress.</p>
+    <div class="form-field"><label>Name</label><input type="text" id="signupName" placeholder="Your name" /></div>
+    <div class="form-field"><label>Email</label><input type="email" id="signupEmail" placeholder="you@example.com" /></div>
+    <div class="form-field"><label>Password</label><input type="password" id="signupPassword" placeholder="Min. 6 characters" /></div>
+    <div class="form-error" id="signupError"></div>
+    <button class="btn-modal-primary" id="signupBtn" onclick="doSignup()">Create Account</button>
+    <p class="modal-switch">Already have an account? <a onclick="openModal('login')">Log In</a></p>
+    <p class="modal-switch" style="margin-top:6px;font-size:.75rem;">Or <a onclick="closeModal('signup')">continue without signing up</a></p>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ── State ──────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════════
 const chatHistory = [];
 let isLoading = false;
-let currentCategory = 'all';
+let authToken  = localStorage.getItem('fb_token') || null;
+let currentUser = null;
+let currentPlanId = null;
+let currentSessionId = null;
+let doneExercises = new Set();
+let chipGroupEl = null;
 
-// ── DOM refs ───────────────────────────────────────────────────
-const chatWindow  = document.getElementById('chatWindow');
-const userInput   = document.getElementById('userInput');
-const sendBtn     = document.getElementById('sendBtn');
-const toast       = document.getElementById('toast');
-const charCount   = document.getElementById('charCount');
-const topbarTitle = document.getElementById('topbarTitle');
-const topbarSub   = document.getElementById('topbarSub');
+// ══════════════════════════════════════════════════
+//  DOM REFS
+// ══════════════════════════════════════════════════
+const chatWindow = document.getElementById('chatWindow');
+const userInput  = document.getElementById('userInput');
+const sendBtn    = document.getElementById('sendBtn');
+const toast      = document.getElementById('toast');
+const charCount  = document.getElementById('charCount');
 
-// ── Tab chip data ──────────────────────────────────────────────
-const TAB_CHIPS = {
-  all: [
-    { label: '🏠 Home Workout',        q: 'Give me a 20-minute home workout routine',           color: '#2563eb' },
-    { label: '🥗 Healthy Breakfast',   q: 'Suggest a healthy high-protein breakfast',            color: '#16a34a' },
-    { label: '💪 Motivate Me',         q: 'I need fitness motivation right now!',                color: '#ea580c' },
-    { label: '📅 Build a Habit',       q: 'Help me build a consistent daily fitness habit',      color: '#7c3aed' },
-    { label: '🎯 Belly Fat',           q: 'What exercises help reduce belly fat?',               color: '#db2777' },
-    { label: '🔰 Beginner Plan',       q: 'Suggest a beginner workout plan for weight loss',     color: '#0891b2' },
-    { label: '🥩 Muscle Gain',         q: 'What should I eat for muscle gain?',                 color: '#65a30d' },
-    { label: '🧘 Stretch',             q: 'Quick 5-minute full body stretching routine',         color: '#9333ea' },
-    { label: '💧 Hydration',           q: 'How much water should I drink daily while exercising?','color': '#0284c7' },
-    { label: '😴 Recovery',            q: 'How important is sleep for fitness and recovery?',    color: '#64748b' },
-  ],
-  workout: [
-    { label: '🏠 Home HIIT',           q: 'Give me a 15-minute HIIT workout at home with no equipment', color: '#ef4444' },
-    { label: '💪 Upper Body',          q: 'Upper body workout routine for beginners at home',    color: '#2563eb' },
-    { label: '🦵 Leg Day',             q: 'Best leg day workout exercises I can do at home',     color: '#16a34a' },
-    { label: '🎯 Core & Abs',          q: 'Give me a 10-minute core and abs workout routine',    color: '#f59e0b' },
-  ],
-  nutrition: [
-    { label: '🥗 Meal Plan',           q: 'Give me a simple healthy 3-day meal plan',            color: '#16a34a' },
-    { label: '🥤 Pre-Workout',         q: 'What are the best foods to eat before a workout?',    color: '#ea580c' },
-    { label: '🍗 Post-Workout',        q: 'What should I eat after a workout for recovery?',     color: '#7c3aed' },
-  ],
-  motivation: [
-    { label: '⚡ Get Started',         q: 'I keep procrastinating my workouts. Help me get started today!', color: '#f59e0b' },
-    { label: '🏆 Stay Consistent',     q: 'How do I stay motivated to work out every day?',      color: '#16a34a' },
-  ],
-  habit: [
-    { label: '🌅 Morning Routine',     q: 'How do I create a healthy morning fitness routine?',  color: '#f59e0b' },
-    { label: '📊 Track Progress',      q: 'How should I track my fitness progress effectively?', color: '#2563eb' },
-    { label: '⏰ No Time',             q: 'I have only 15 minutes a day. What habits should I build?', color: '#7c3aed' },
-  ],
-  cardio: [
-    { label: '🏃 Running Plan',        q: 'Create a beginner running plan for 4 weeks',          color: '#ef4444' },
-    { label: '🚴 Cycling',             q: 'Benefits of cycling for fitness and how to start',    color: '#2563eb' },
-    { label: '🪂 Jump Rope',           q: 'Jump rope workout routine for cardio and fat loss',   color: '#16a34a' },
-  ],
-  yoga: [
-    { label: '🧘 Morning Yoga',        q: 'Give me a simple 10-minute morning yoga routine',     color: '#9333ea' },
-    { label: '💆 Stress Relief',       q: 'Yoga poses and stretches for stress relief',          color: '#7c3aed' },
-    { label: '🦵 Flexibility',         q: 'Stretching exercises to improve flexibility',         color: '#0891b2' },
-  ],
-};
-
-const CATEGORY_META = {
-  all:        { title: '💬 Chat with Fitness Buddy',  sub: 'Ask me anything about fitness, nutrition, or motivation' },
-  workout:    { title: '🏋️ Workouts',                 sub: 'Home exercises, routines, and training plans' },
-  nutrition:  { title: '🥗 Nutrition',                sub: 'Healthy meals, diet tips, and nutrition guidance' },
-  motivation: { title: '💪 Motivation',               sub: 'Get inspired and stay consistent with your goals' },
-  habit:      { title: '📅 Habit Building',           sub: 'Build lasting fitness habits and routines' },
-  cardio:     { title: '🏃 Cardio Training',          sub: 'Running, cycling, and cardio workouts' },
-  yoga:       { title: '🧘 Yoga & Stretching',        sub: 'Flexibility, relaxation, and mindful movement' },
-};
-
-// ── Utilities ──────────────────────────────────────────────────
-let toastTimer = null;
-function showToast(msg, type = 'error') {
+// ══════════════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════════════
+let toastTimer;
+function showToast(msg, type = '') {
   toast.textContent = msg;
   toast.className = `toast ${type} show`;
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove('show'), 4000);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
 }
 
-function scrollToBottom() {
+// ══════════════════════════════════════════════════
+//  PAGE ROUTING
+// ══════════════════════════════════════════════════
+const PAGE_META = {
+  chat:     { title: '💬 Chat with Fitness Buddy', sub: 'Ask anything about fitness, nutrition, or motivation' },
+  plans:    { title: '📋 Workout Plans',            sub: 'Choose a plan and start training today' },
+  session:  { title: '🏋️ Session',                  sub: '' },
+  progress: { title: '📊 My Progress',              sub: 'Track your workout sessions and logs' },
+};
+
+function switchPage(page) {
+  ['chat','plans','session','progress'].forEach(p => {
+    const el = document.getElementById('page-' + p);
+    if (el) { el.style.display = 'none'; el.classList.remove('active'); }
+  });
+  const el = document.getElementById('page-' + page);
+  if (el) { el.style.display = 'flex'; el.classList.add('active'); }
+
+  document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
+  const ptab = document.getElementById('ptab-' + page);
+  if (ptab) ptab.classList.add('active');
+
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+  document.getElementById('topbarTitle').textContent = PAGE_META[page]?.title || '';
+  document.getElementById('topbarSub').textContent   = PAGE_META[page]?.sub   || '';
+
+  const catStrip = document.querySelector('.cat-strip');
+  const clearBtn = document.getElementById('clearChatBtn');
+  catStrip.style.display = (page === 'chat') ? '' : 'none';
+  clearBtn.style.display = (page === 'chat') ? '' : 'none';
+
+  if (page === 'plans')    loadPlans();
+  if (page === 'progress') loadProgress();
+}
+
+// ══════════════════════════════════════════════════
+//  AUTH HELPERS
+// ══════════════════════════════════════════════════
+function authHeaders() {
+  return authToken
+    ? { 'Content-Type': 'application/json', Authorization: 'Bearer ' + authToken }
+    : { 'Content-Type': 'application/json' };
+}
+
+function setLoggedIn(user, token) {
+  authToken   = token;
+  currentUser = user;
+  if (token) localStorage.setItem('fb_token', token);
+  document.getElementById('authArea').style.display = 'none';
+  document.getElementById('userArea').style.display = '';
+  document.getElementById('userName').textContent   = user.name.split(' ')[0];
+  document.getElementById('userInitials').textContent = user.name.charAt(0).toUpperCase();
+  document.getElementById('userMenuEmail').textContent = user.email;
+}
+
+function setLoggedOut() {
+  authToken   = null;
+  currentUser = null;
+  localStorage.removeItem('fb_token');
+  document.getElementById('authArea').style.display = '';
+  document.getElementById('userArea').style.display = 'none';
+}
+
+async function checkSession() {
+  if (!authToken) return;
+  try {
+    const r = await fetch('/api/auth/me', { headers: authHeaders() });
+    if (r.ok) {
+      const d = await r.json();
+      setLoggedIn(d.user, authToken);
+    } else {
+      setLoggedOut();
+    }
+  } catch { setLoggedOut(); }
+}
+
+// ══════════════════════════════════════════════════
+//  MODAL
+// ══════════════════════════════════════════════════
+function openModal(type) {
+  closeModal('login'); closeModal('signup');
+  document.getElementById('modal' + type.charAt(0).toUpperCase() + type.slice(1)).classList.add('open');
+}
+function closeModal(type) {
+  document.getElementById('modal' + type.charAt(0).toUpperCase() + type.slice(1)).classList.remove('open');
+}
+
+async function doLogin() {
+  const email    = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const errEl    = document.getElementById('loginError');
+  const btn      = document.getElementById('loginBtn');
+  errEl.textContent = '';
+  if (!email || !password) { errEl.textContent = 'Please fill in all fields.'; return; }
+  btn.disabled = true; btn.textContent = 'Logging in…';
+  try {
+    const r = await fetch('/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) });
+    const d = await r.json();
+    if (!r.ok) { errEl.textContent = d.error; return; }
+    setLoggedIn(d.user, d.token);
+    closeModal('login');
+    showToast('Welcome back, ' + d.user.name + '! 👋', 'success');
+  } catch { errEl.textContent = 'Network error. Please try again.'; }
+  finally { btn.disabled = false; btn.textContent = 'Log In'; }
+}
+
+async function doSignup() {
+  const name     = document.getElementById('signupName').value.trim();
+  const email    = document.getElementById('signupEmail').value.trim();
+  const password = document.getElementById('signupPassword').value;
+  const errEl    = document.getElementById('signupError');
+  const btn      = document.getElementById('signupBtn');
+  errEl.textContent = '';
+  if (!name || !email || !password) { errEl.textContent = 'Please fill in all fields.'; return; }
+  btn.disabled = true; btn.textContent = 'Creating account…';
+  try {
+    const r = await fetch('/api/auth/signup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, email, password }) });
+    const d = await r.json();
+    if (!r.ok) { errEl.textContent = d.error; return; }
+    setLoggedIn(d.user, d.token);
+    closeModal('signup');
+    showToast('Account created! Welcome, ' + d.user.name + '! 🎉', 'success');
+  } catch { errEl.textContent = 'Network error. Please try again.'; }
+  finally { btn.disabled = false; btn.textContent = 'Create Account'; }
+}
+
+async function doLogout() {
+  toggleUserMenu();
+  try { await fetch('/api/auth/logout', { method: 'POST', headers: authHeaders() }); } catch {}
+  setLoggedOut();
+  showToast('Logged out successfully.');
+}
+
+function toggleUserMenu() {
+  const m = document.getElementById('userMenu');
+  m.style.display = m.style.display === 'none' ? 'block' : 'none';
+}
+document.addEventListener('click', e => {
+  const area = document.getElementById('userArea');
+  if (area && !area.contains(e.target)) {
+    const m = document.getElementById('userMenu');
+    if (m) m.style.display = 'none';
+  }
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal('login'); closeModal('signup'); } });
+
+// ══════════════════════════════════════════════════
+//  CHAT
+// ══════════════════════════════════════════════════
+const CAT_CHIPS = {
+  all:        [
+    { label: '🏠 Home Workout',      q: 'Give me a 20-minute home workout routine',        color: '#2563eb' },
+    { label: '🥗 Healthy Breakfast', q: 'Suggest a healthy high-protein breakfast',         color: '#16a34a' },
+    { label: '💪 Motivate Me',       q: 'I need fitness motivation right now!',             color: '#ea580c' },
+    { label: '📅 Build a Habit',     q: 'Help me build a consistent daily fitness habit',   color: '#7c3aed' },
+    { label: '🎯 Belly Fat',         q: 'What exercises help reduce belly fat?',            color: '#db2777' },
+    { label: '🔰 Beginner Plan',     q: 'Suggest a beginner workout plan for weight loss',  color: '#0891b2' },
+    { label: '🥩 Muscle Gain',       q: 'What should I eat for muscle gain?',               color: '#65a30d' },
+    { label: '🧘 Stretch',           q: 'Quick 5-minute full body stretching routine',      color: '#9333ea' },
+  ],
+  workout:    [
+    { label: '🏠 Home HIIT',         q: 'Give me a 15-minute HIIT workout at home',        color: '#ef4444' },
+    { label: '💪 Upper Body',        q: 'Upper body workout routine for beginners at home', color: '#2563eb' },
+    { label: '🦵 Leg Day',           q: 'Best leg day workout exercises at home',           color: '#16a34a' },
+    { label: '🎯 Core & Abs',        q: 'Give me a 10-minute core and abs workout',         color: '#f59e0b' },
+  ],
+  nutrition:  [
+    { label: '🥗 3-Day Meal Plan',   q: 'Give me a simple healthy 3-day meal plan',         color: '#16a34a' },
+    { label: '🥤 Pre-Workout Meal',  q: 'What are the best foods to eat before a workout?', color: '#ea580c' },
+    { label: '🍗 Post-Workout',      q: 'What should I eat after a workout for recovery?',  color: '#7c3aed' },
+  ],
+  motivation: [
+    { label: '⚡ Get Started',       q: 'I keep procrastinating workouts. Help me start today!', color: '#f59e0b' },
+    { label: '🏆 Stay Consistent',   q: 'How do I stay motivated to work out every day?',  color: '#16a34a' },
+  ],
+  habit:      [
+    { label: '🌅 Morning Routine',   q: 'How do I create a healthy morning fitness routine?', color: '#f59e0b' },
+    { label: '📊 Track Progress',    q: 'How should I track my fitness progress?',           color: '#2563eb' },
+    { label: '⏰ Only 15 mins',      q: 'I have only 15 minutes a day. Best habits?',         color: '#7c3aed' },
+  ],
+  cardio:     [
+    { label: '🏃 Running Plan',      q: 'Create a beginner running plan for 4 weeks',       color: '#ef4444' },
+    { label: '🚴 Cycling',           q: 'Benefits of cycling and how to start',             color: '#2563eb' },
+    { label: '🪂 Jump Rope',         q: 'Jump rope workout routine for fat loss',            color: '#16a34a' },
+  ],
+  yoga:       [
+    { label: '🧘 Morning Yoga',      q: 'Give me a simple 10-minute morning yoga routine',  color: '#9333ea' },
+    { label: '💆 Stress Relief',     q: 'Yoga poses for stress relief',                     color: '#7c3aed' },
+    { label: '🦵 Flexibility',       q: 'Stretching exercises to improve flexibility',      color: '#0891b2' },
+  ],
+};
+
+function nowTime() { return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); }
+
+function renderMarkdown(text) {
+  return text
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/^#{1,3}\s+(.+)$/gm,'<h3>$1</h3>')
+    .replace(/^[-•]\s+(.+)$/gm,'<li>$1</li>')
+    .replace(/^\d+\.\s+(.+)$/gm,'<li>$1</li>')
+    .replace(/(<li>[\s\S]*?<\/li>(?:\s*<li>[\s\S]*?<\/li>)*)/g,'<ul>$1</ul>')
+    .replace(/\n{2,}/g,'</p><p>')
+    .replace(/\n/g,'<br>')
+    .replace(/^(?!<[hup])/m,'<p>')
+    .replace(/([^>])$/m,'$1</p>');
+}
+
+function appendMessage(role, text) {
+  const w = document.createElement('div'); w.className = 'message ' + role;
+  const av = document.createElement('div'); av.className = 'avatar'; av.textContent = role === 'user' ? '👤' : '🤖';
+  const col = document.createElement('div');
+  const b = document.createElement('div'); b.className = 'bubble';
+  b.innerHTML = role === 'bot' ? renderMarkdown(text) : (b.textContent = text, b.textContent = text, b.innerHTML);
+  if (role === 'user') b.textContent = text;
+  else b.innerHTML = renderMarkdown(text);
+  const m = document.createElement('div'); m.className = 'msg-meta'; m.textContent = nowTime();
+  col.appendChild(b); col.appendChild(m);
+  w.appendChild(av); w.appendChild(col);
+  chatWindow.appendChild(w);
   chatWindow.scrollTop = chatWindow.scrollHeight;
 }
 
-function nowTime() {
-  return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-}
-
-/** Markdown-lite → HTML */
-function renderMarkdown(text) {
-  return text
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/^#{1,3}\s+(.+)$/gm, '<h3>$1</h3>')
-    .replace(/^[-•]\s+(.+)$/gm, '<li>$1</li>')
-    .replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>')
-    .replace(/(<li>[\s\S]*?<\/li>(?:\s*<li>[\s\S]*?<\/li>)*)/g, '<ul>$1</ul>')
-    .replace(/\n{2,}/g, '</p><p>')
-    .replace(/\n/g, '<br>')
-    .replace(/^(?!<[hup])(.)/m, '<p>$1')
-    .replace(/([^>])$/m, '$1</p>');
-}
-
-// ── Append message ─────────────────────────────────────────────
-function appendMessage(role, text) {
-  const wrapper = document.createElement('div');
-  wrapper.className = `message ${role}`;
-
-  const avatar = document.createElement('div');
-  avatar.className = 'avatar';
-  avatar.textContent = role === 'user' ? '👤' : '🤖';
-
-  const col = document.createElement('div');
-
-  const bubble = document.createElement('div');
-  bubble.className = 'bubble';
-  if (role === 'bot') {
-    bubble.innerHTML = renderMarkdown(text);
-  } else {
-    bubble.textContent = text;
-  }
-
-  const meta = document.createElement('div');
-  meta.className = 'msg-meta';
-  meta.textContent = nowTime();
-
-  col.appendChild(bubble);
-  col.appendChild(meta);
-  wrapper.appendChild(avatar);
-  wrapper.appendChild(col);
-  chatWindow.appendChild(wrapper);
-  scrollToBottom();
-  return wrapper;
-}
-
-// ── Typing indicator ───────────────────────────────────────────
 function showTyping() {
-  const wrapper = document.createElement('div');
-  wrapper.className = 'message bot';
-  wrapper.id = 'typingIndicator';
-
-  const avatar = document.createElement('div');
-  avatar.className = 'avatar';
-  avatar.textContent = '🤖';
-
-  const indicator = document.createElement('div');
-  indicator.className = 'typing-indicator';
-  indicator.innerHTML = '<span class="typing-label">Thinking…</span><div class="dot"></div><div class="dot"></div><div class="dot"></div>';
-
-  wrapper.appendChild(avatar);
-  wrapper.appendChild(indicator);
-  chatWindow.appendChild(wrapper);
-  scrollToBottom();
+  const w = document.createElement('div'); w.className = 'message bot'; w.id = 'typingInd';
+  const av = document.createElement('div'); av.className = 'avatar'; av.textContent = '🤖';
+  const ind = document.createElement('div'); ind.className = 'typing-indicator';
+  ind.innerHTML = '<span class="typing-label">Thinking…</span><div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+  w.appendChild(av); w.appendChild(ind);
+  chatWindow.appendChild(w); chatWindow.scrollTop = chatWindow.scrollHeight;
 }
-function hideTyping() {
-  const el = document.getElementById('typingIndicator');
-  if (el) el.remove();
-}
+function hideTyping() { const e = document.getElementById('typingInd'); if (e) e.remove(); }
 
-// ── Send message ───────────────────────────────────────────────
 async function sendMessage(text) {
   text = text.trim();
   if (!text || isLoading) return;
-
-  isLoading = true;
-  sendBtn.disabled = true;
-  userInput.value = '';
-  userInput.style.height = 'auto';
-  charCount.textContent = '0 / 1000';
-  charCount.classList.remove('warn');
-
+  isLoading = true; sendBtn.disabled = true;
+  userInput.value = ''; userInput.style.height = 'auto';
+  charCount.textContent = '0 / 1000'; charCount.classList.remove('warn');
   appendMessage('user', text);
   chatHistory.push({ role: 'user', content: text });
   showTyping();
-
   try {
-    const res = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: text, history: chatHistory.slice(-10) }),
-    });
-
-    const data = await res.json();
-    hideTyping();
-
-    if (!res.ok) {
-      showToast(data.error || 'Something went wrong. Please try again.');
-      chatHistory.pop();
-      return;
-    }
-
-    appendMessage('bot', data.reply);
-    chatHistory.push({ role: 'assistant', content: data.reply });
-
-  } catch {
-    hideTyping();
-    showToast('Network error — please check your connection.');
-    chatHistory.pop();
-  } finally {
-    isLoading = false;
-    sendBtn.disabled = false;
-    userInput.focus();
-  }
+    const r = await fetch('/api/chat', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ message: text, history: chatHistory.slice(-10) }) });
+    const d = await r.json(); hideTyping();
+    if (!r.ok) { showToast(d.error || 'Something went wrong.', 'error'); chatHistory.pop(); return; }
+    appendMessage('bot', d.reply);
+    chatHistory.push({ role: 'assistant', content: d.reply });
+  } catch { hideTyping(); showToast('Network error — please check your connection.', 'error'); chatHistory.pop(); }
+  finally { isLoading = false; sendBtn.disabled = false; userInput.focus(); }
 }
 
-function sendQuick(text) { userInput.value = text; sendMessage(text); closeSidebar(); }
-
-// ── Tab chips ──────────────────────────────────────────────────
-let chipGroupEl = null;
-function showTabChips(cat) {
-  // Update active tab
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  const tabEl = document.getElementById('tab-' + cat);
-  if (tabEl) tabEl.classList.add('active');
-
-  // Update topbar
-  const meta = CATEGORY_META[cat];
-  if (meta) { topbarTitle.textContent = meta.title; topbarSub.textContent = meta.sub; }
-
-  // Remove old chip group
-  if (chipGroupEl) chipGroupEl.remove();
-
-  const chips = TAB_CHIPS[cat];
-  if (!chips) return;
-
-  chipGroupEl = document.createElement('div');
-  chipGroupEl.className = 'chip-group';
-
-  const title = document.createElement('div');
-  title.className = 'chip-group-title';
-  title.textContent = '✨ Quick suggestions — click to ask:';
-  chipGroupEl.appendChild(title);
-
-  chips.forEach(({ label, q, color }) => {
-    const btn = document.createElement('button');
-    btn.className = 'cat-chip';
-    btn.textContent = label;
-    btn.style.color = color;
-    btn.style.borderColor = color + '55';
-    btn.style.background = color + '0d';
-    btn.addEventListener('mouseover', () => { btn.style.background = color + '18'; });
-    btn.addEventListener('mouseout',  () => { btn.style.background = color + '0d'; });
-    btn.onclick = () => { chipGroupEl.remove(); chipGroupEl = null; sendMessage(q); };
-    chipGroupEl.appendChild(btn);
-  });
-
-  chatWindow.appendChild(chipGroupEl);
-  scrollToBottom();
-}
-
-// ── Nav sidebar category ───────────────────────────────────────
-function setCategory(cat) {
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  event.currentTarget.classList.add('active');
-  showTabChips(cat);
+function quickSend(text) {
+  switchPage('chat');
+  userInput.value = text;
+  sendMessage(text);
   closeSidebar();
 }
 
-// ── Clear chat ─────────────────────────────────────────────────
+function showCatChips(cat) {
+  document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+  const el = document.getElementById('ctab-' + cat);
+  if (el) el.classList.add('active');
+  if (chipGroupEl) { chipGroupEl.remove(); chipGroupEl = null; }
+  const chips = CAT_CHIPS[cat];
+  if (!chips) return;
+  chipGroupEl = document.createElement('div'); chipGroupEl.className = 'chip-group';
+  const title = document.createElement('div'); title.className = 'chip-group-title'; title.textContent = '✨ Tap a suggestion to ask:';
+  chipGroupEl.appendChild(title);
+  chips.forEach(({ label, q, color }) => {
+    const btn = document.createElement('button'); btn.className = 'cat-chip';
+    btn.textContent = label; btn.style.color = color; btn.style.borderColor = color + '55'; btn.style.background = color + '0d';
+    btn.onmouseover = () => { btn.style.background = color + '18'; };
+    btn.onmouseout  = () => { btn.style.background = color + '0d'; };
+    btn.onclick = () => { chipGroupEl.remove(); chipGroupEl = null; sendMessage(q); };
+    chipGroupEl.appendChild(btn);
+  });
+  chatWindow.appendChild(chipGroupEl); chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
 function clearChat() {
   if (!chatHistory.length) return;
-  chatWindow.innerHTML = '';
-  chatHistory.length = 0;
-  chipGroupEl = null;
-  showToast('Chat cleared', 'info');
+  chatWindow.innerHTML = ''; chatHistory.length = 0; chipGroupEl = null;
+  showToast('Chat cleared.');
   loadWelcome();
 }
 
-// ── Mobile sidebar ─────────────────────────────────────────────
+userInput.addEventListener('input', () => {
+  userInput.style.height = 'auto';
+  userInput.style.height = Math.min(userInput.scrollHeight, 160) + 'px';
+  const l = userInput.value.length;
+  charCount.textContent = l + ' / 1000';
+  charCount.classList.toggle('warn', l > 900);
+});
+userInput.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(userInput.value); } });
+sendBtn.addEventListener('click', () => sendMessage(userInput.value));
+
+async function loadWelcome() {
+  showTyping();
+  try {
+    const r = await fetch('/api/chat/welcome');
+    const d = await r.json(); hideTyping();
+    appendMessage('bot', d.reply);
+    chatHistory.push({ role: 'assistant', content: d.reply });
+  } catch {
+    hideTyping();
+    appendMessage('bot', "👋 Hi! I'm **Fitness Buddy**, your AI health coach powered by IBM Granite!\n\nI can help you with:\n- 🏋️ Home workout routines\n- 🥗 Healthy meal ideas & nutrition\n- 💪 Daily motivation\n- 📅 Habit building\n\nOr browse **Workout Plans** to follow a structured programme and track your progress! What are your goals today?");
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  PLANS
+// ══════════════════════════════════════════════════
+async function loadPlans() {
+  const grid = document.getElementById('plansGrid');
+  grid.innerHTML = '<div class="empty-state"><div class="empty-icon">⏳</div><h3>Loading plans…</h3></div>';
+  try {
+    const r = await fetch('/api/plans', { headers: authHeaders() });
+    const d = await r.json();
+    renderPlansGrid(d.plans);
+  } catch { grid.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><h3>Could not load plans.</h3><p>Please try again.</p></div>'; }
+}
+
+function renderPlansGrid(plans) {
+  const grid = document.getElementById('plansGrid');
+  grid.innerHTML = '';
+  plans.forEach(plan => {
+    const pct = plan.totalSessions > 0 ? Math.round((plan.completedSessions / plan.totalSessions) * 100) : 0;
+    const card = document.createElement('div');
+    card.className = 'plan-card';
+    card.innerHTML = `
+      <div class="plan-card-top">
+        <div class="plan-emoji">${plan.emoji}</div>
+        <span class="plan-level-badge">${plan.level}</span>
+      </div>
+      <h3>${plan.title}</h3>
+      <p>${plan.description}</p>
+      <div class="plan-meta">
+        <span>⏱ ${plan.duration}</span>
+        <span>📅 ${plan.daysPerWeek}x/week</span>
+        <span>🎯 ${plan.goal}</span>
+      </div>
+      ${plan.started ? `
+        <div>
+          <div class="plan-progress-bar"><div class="plan-progress-fill" style="width:${pct}%;background:${plan.color}"></div></div>
+          <div class="plan-progress-label">${plan.completedSessions}/${plan.totalSessions} sessions · ${pct}%</div>
+        </div>` : ''}
+      <button class="btn-start" style="background:${plan.color}" onclick="openPlan('${plan.id}')">
+        ${plan.started ? '▶ Continue Plan' : '🚀 Start Plan'}
+      </button>`;
+    grid.appendChild(card);
+  });
+}
+
+async function openPlan(planId) {
+  try {
+    await fetch(`/api/plans/${planId}/start`, { method: 'POST', headers: authHeaders() });
+    const r = await fetch(`/api/plans/${planId}`, { headers: authHeaders() });
+    const d = await r.json();
+    renderSessionList(d.plan);
+  } catch { showToast('Could not load plan.', 'error'); }
+}
+
+function renderSessionList(plan) {
+  currentPlanId = plan.id;
+  doneExercises = new Set();
+  document.getElementById('sessionTitle').textContent = plan.emoji + ' ' + plan.title;
+  document.getElementById('sessionMeta').textContent  = plan.duration + ' · ' + plan.daysPerWeek + 'x per week · ' + plan.level;
+
+  const list = document.getElementById('exerciseList');
+  list.innerHTML = '';
+
+  plan.sessions.forEach(session => {
+    // Session header
+    const sh = document.createElement('div');
+    sh.style.cssText = 'font-size:.8rem;font-weight:800;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;padding:4px 0 2px;margin-top:8px;';
+    sh.textContent = session.day + ' — ' + session.title;
+    list.appendChild(sh);
+
+    session.exercises.forEach(ex => {
+      const card = document.createElement('div');
+      card.className = 'exercise-card';
+      card.id = 'excard-' + ex.id;
+      card.innerHTML = `
+        <div class="ex-top">
+          <div class="ex-name">${ex.name}</div>
+          <span class="ex-muscle">${ex.muscle}</span>
+        </div>
+        <div class="ex-meta">
+          <span>📦 ${ex.sets} sets</span>
+          <span>🔁 ${ex.reps} reps</span>
+          ${ex.rest !== '0' ? `<span>⏸ ${ex.rest} rest</span>` : ''}
+        </div>
+        <div class="ex-tip">💡 ${ex.tip}</div>
+        <div class="ex-log-row">
+          <span class="log-label">Sets done:</span>
+          <input class="log-input" type="number" id="sets-${ex.id}" placeholder="${ex.sets}" min="0" max="20" />
+          <span class="log-label">Reps:</span>
+          <input class="log-input" type="number" id="reps-${ex.id}" placeholder="${ex.reps}" min="0" max="200" />
+          <button class="btn-log" onclick="logExercise('${plan.id}','${session.id}','${ex.id}')">📝 Log</button>
+          <button class="btn-done-ex" onclick="markExDone('${ex.id}')">✅ Done</button>
+        </div>
+        <div id="exdone-${ex.id}" style="display:none;margin-top:8px">
+          <span class="done-badge">✅ Exercise logged!</span>
+        </div>`;
+      list.appendChild(card);
+    });
+  });
+
+  document.getElementById('completeSessionBtn').disabled = false;
+  document.getElementById('sessionCompleteHint').textContent = 'Log your reps, mark exercises done, then complete the session.';
+  switchPage('session');
+}
+
+async function logExercise(planId, sessionId, exId) {
+  const sets = document.getElementById('sets-' + exId)?.value || 0;
+  const reps = document.getElementById('reps-' + exId)?.value || 0;
+  try {
+    await fetch(`/api/plans/${planId}/exercises/${exId}/log`, {
+      method: 'POST', headers: authHeaders(),
+      body: JSON.stringify({ sessionId, setsCompleted: +sets, repsCompleted: +reps }),
+    });
+    showToast('Exercise logged! 💪', 'success');
+  } catch { showToast('Could not log exercise.', 'error'); }
+}
+
+function markExDone(exId) {
+  doneExercises.add(exId);
+  const card = document.getElementById('excard-' + exId);
+  if (card) card.classList.add('done');
+  const badge = document.getElementById('exdone-' + exId);
+  if (badge) badge.style.display = '';
+}
+
+async function completeSession() {
+  if (!currentPlanId) return;
+  // find which session we're on — use first session in the plan that's not done
+  try {
+    const r = await fetch(`/api/plans/${currentPlanId}`, { headers: authHeaders() });
+    const d = await r.json();
+    const plan = d.plan;
+    const nextSession = plan.sessions.find(s => !(plan.completedSessions || []).includes(s.id));
+    const sid = nextSession ? nextSession.id : plan.sessions[0]?.id;
+    if (sid) {
+      await fetch(`/api/plans/${currentPlanId}/sessions/${sid}/complete`, { method: 'POST', headers: authHeaders() });
+    }
+    showToast('Session complete! Great work 🎉', 'success');
+    document.getElementById('completeSessionBtn').disabled = true;
+    document.getElementById('sessionCompleteHint').textContent = '✅ Session completed!';
+  } catch { showToast('Could not mark session complete.', 'error'); }
+}
+
+// ══════════════════════════════════════════════════
+//  PROGRESS
+// ══════════════════════════════════════════════════
+async function loadProgress() {
+  const body = document.getElementById('progressBody');
+  body.innerHTML = '<div class="empty-state"><div class="empty-icon">⏳</div><h3>Loading…</h3></div>';
+  try {
+    const r = await fetch('/api/plans/progress/all', { headers: authHeaders() });
+    const d = await r.json();
+    renderProgress(d.progress);
+  } catch { body.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><h3>Could not load progress.</h3></div>'; }
+}
+
+function renderProgress(progress) {
+  const body = document.getElementById('progressBody');
+  body.innerHTML = '';
+
+  if (!progress || progress.length === 0) {
+    body.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">🏁</div>
+      <h3>No activity yet</h3>
+      <p>Head to <strong>Workout Plans</strong> to start your first session and track your progress here.</p>
+    </div>`;
+    return;
+  }
+
+  const totalSessions = progress.reduce((a, p) => a + p.completedSessions.length, 0);
+  const totalLogs     = progress.reduce((a, p) => a + p.totalLogs, 0);
+  const activePlans   = progress.length;
+
+  const statsDiv = document.createElement('div'); statsDiv.className = 'stats-row';
+  statsDiv.innerHTML = `
+    <div class="stat-card"><div class="stat-num">${activePlans}</div><div class="stat-label">Active Plans</div></div>
+    <div class="stat-card"><div class="stat-num">${totalSessions}</div><div class="stat-label">Sessions Done</div></div>
+    <div class="stat-card"><div class="stat-num">${totalLogs}</div><div class="stat-label">Exercises Logged</div></div>
+    <div class="stat-card"><div class="stat-num">${totalSessions > 0 ? '🔥' : '–'}</div><div class="stat-label">${totalSessions > 0 ? 'On a streak!' : 'Start now!'}</div></div>`;
+  body.appendChild(statsDiv);
+
+  progress.forEach(pp => {
+    const pct = pp.totalSessions > 0 ? Math.round((pp.completedSessions.length / pp.totalSessions) * 100) : 0;
+    const card = document.createElement('div'); card.className = 'progress-plan-card';
+    const startDate = pp.startedAt ? new Date(pp.startedAt).toLocaleDateString() : 'Unknown';
+    card.innerHTML = `
+      <div class="progress-plan-top">
+        <div class="plan-emoji">${pp.planEmoji}</div>
+        <h3>${pp.planTitle}</h3>
+        <span class="progress-plan-date">Started ${startDate}</span>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%;background:var(--primary)"></div></div>
+        <div class="progress-bar-labels"><span>${pp.completedSessions.length} / ${pp.totalSessions} sessions</span><span>${pct}%</span></div>
+      </div>
+      <p style="font-size:.8rem;color:var(--muted);">📝 ${pp.totalLogs} exercise logs · Last active: ${pp.lastActivity ? new Date(pp.lastActivity).toLocaleDateString() : '—'}</p>`;
+    body.appendChild(card);
+  });
+
+  if (currentUser) {
+    const sub = document.getElementById('progressSubtitle');
+    sub.textContent = 'Welcome back, ' + currentUser.name + '! Here\'s your fitness journey.';
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  SIDEBAR / MOBILE
+// ══════════════════════════════════════════════════
 function toggleSidebar() {
   const sb = document.getElementById('sidebar');
   const ov = document.getElementById('overlay');
@@ -1062,39 +1383,11 @@ function closeSidebar() {
   document.getElementById('overlay').style.display = 'none';
 }
 
-// ── Input events ───────────────────────────────────────────────
-userInput.addEventListener('input', () => {
-  userInput.style.height = 'auto';
-  userInput.style.height = Math.min(userInput.scrollHeight, 160) + 'px';
-  const len = userInput.value.length;
-  charCount.textContent = `${len} / 1000`;
-  charCount.classList.toggle('warn', len > 900);
-});
-
-userInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    sendMessage(userInput.value);
-  }
-});
-
-sendBtn.addEventListener('click', () => sendMessage(userInput.value));
-
-// ── Welcome message ────────────────────────────────────────────
-async function loadWelcome() {
-  showTyping();
-  try {
-    const res  = await fetch('/api/chat/welcome');
-    const data = await res.json();
-    hideTyping();
-    appendMessage('bot', data.reply);
-    chatHistory.push({ role: 'assistant', content: data.reply });
-  } catch {
-    hideTyping();
-    appendMessage('bot', "👋 Hi! I'm **Fitness Buddy**, your personal AI health and fitness coach powered by IBM Granite!\n\nI can help you with:\n- 🏋️ Home workout routines\n- 🥗 Healthy meal ideas & nutrition\n- 💪 Daily motivation & inspiration\n- 📅 Habit building & consistency\n\nWhat are your fitness goals today?");
-  }
-}
-
+// ══════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════
+switchPage('chat');
+checkSession();
 loadWelcome();
 </script>
 </body>
