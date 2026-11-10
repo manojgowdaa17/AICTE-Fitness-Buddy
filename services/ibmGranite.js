@@ -64,7 +64,11 @@ async function generateWithGranite(messages) {
     }
   );
 
-  const text = response.data?.choices?.[0]?.message?.content || '';
+  const text  = response.data?.choices?.[0]?.message?.content || '';
+  const usage = response.data?.usage;
+  if (usage) {
+    console.log(`[Token Usage] prompt=${usage.prompt_tokens} completion=${usage.completion_tokens} total=${usage.total_tokens}`);
+  }
   return text.trim();
 }
 
